@@ -1,7 +1,7 @@
 # 데익스트라로 풀어보기
 # 데익스트라의 핵심은 우선순위 큐이다. 그리고 이건 파이썬에서 제공한다.
 
-from queue import PriorityQueue
+import heapq as pq
 from sys import stdin, maxsize
 
 read = lambda: stdin.readline().rstrip()
@@ -16,18 +16,18 @@ for _ in range(num_e):
 
 dist = [maxsize for _ in range(num_v + 1)]
 
-travel_pq = PriorityQueue()
-travel_pq.put((0, start_v))
+travel_pq = []
+pq.heappush(travel_pq, (0, start_v))
 dist[start_v] = 0
 
-while not travel_pq.empty():
-    curr_dist, curr_v = travel_pq.get()
+while len(travel_pq) != 0:
+    curr_dist, curr_v = pq.heappop(travel_pq)
     if curr_dist > dist[curr_v]:
         continue
     for weight, end_v in edges[curr_v]:
         if dist[end_v] > curr_dist + weight:
             dist[end_v] = curr_dist + weight
-            travel_pq.put((curr_dist + weight, end_v))
+            pq.heappush(travel_pq, (curr_dist + weight, end_v))
 
 for idx, final_dist in enumerate(dist):
     if idx == 0:
