@@ -1,23 +1,26 @@
 import heapq as pq
 from sys import stdin, maxsize
+from typing import TypeVar, Generic
 
 read = lambda: stdin.readline().rstrip()
 
+T = TypeVar("T")
 
-class Heap:
-    def __init__(self, data=[]) -> None:
+
+class Heap(Generic[T]):
+    def __init__(self, data: list[T] = []) -> None:
         self.data = data.copy()
         pq.heapify(self.data)
 
-    def push(self, item):
+    def push(self, item: T):
         pq.heappush(self.data, item)
         return self
 
-    def pop(self):
+    def pop(self) -> T:
         return pq.heappop(self.data)
 
-    def concat(self, item):
-        self.data.concat(item)
+    def extend(self, items: list[T]):
+        self.data.extend(items)
         pq.heapify(self.data)
         return self
 
