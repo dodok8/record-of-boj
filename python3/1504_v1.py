@@ -1,25 +1,34 @@
 import heapq as pq
-from sys import stdin, maxsize
-from typing import TypeVar, Generic
-
-read = lambda: stdin.readline().rstrip()
-
-T = TypeVar("T")
+from sys import stdin, maxsize as 최고값
+from typing import TypeVar as 타입변수, Generic as 제네릭
 
 
-class Heap(Generic[T]):
-    def __init__(self, data: list[T] = []) -> None:
+읽기 = lambda: stdin.readline().rstrip()
+길이 = len
+ㅌ = 타입변수("T")
+출력하기 = print
+정수 = int
+범위 = range
+예외 = Exception
+
+
+class 연결_안됨_예외(예외):
+    pass
+
+
+class 힙(제네릭[ㅌ]):
+    def __init__(self, data: list[ㅌ] = []) -> None:
         self.data = data.copy()
         pq.heapify(self.data)
 
-    def push(self, item: T):
+    def 넣기(self, item: ㅌ):
         pq.heappush(self.data, item)
         return self
 
-    def pop(self) -> T:
+    def 꺼내기(self) -> ㅌ:
         return pq.heappop(self.data)
 
-    def extend(self, items: list[T]):
+    def 확장하기(self, items: list[ㅌ]):
         self.data.extend(items)
         pq.heapify(self.data)
         return self
@@ -28,54 +37,53 @@ class Heap(Generic[T]):
         return len(self.data)
 
 
-def get_shortest_path(start_v: int, end_v: int, edges: list[tuple[int, int]]):
-    dist = [maxsize for _ in range(num_v + 1)]
-    travel_pq = Heap()
-    travel_pq.push((0, start_v))
-    dist[start_v] = 0
+def 최단거리_구하기(시작_정점: int, 끝_정점: int, 간선들: list[tuple[int, int]]):
+    global 갯수_정점
+    거리들 = [최고값 for _ in 범위(갯수_정점 + 1)]
+    여행_힙 = 힙()
+    여행_힙.넣기((0, 시작_정점))
+    거리들[시작_정점] = 0
 
-    while len(travel_pq) != 0:
-        curr_dist, curr_v = travel_pq.pop()
-        if curr_dist > dist[curr_v]:
+    while 길이(여행_힙) != 0:
+        현재_거리, 현재_정점 = 여행_힙.꺼내기()
+        if 현재_거리 > 거리들[현재_정점]:
             continue
-        for weight, adj_v in edges[curr_v]:
-            if dist[adj_v] > curr_dist + weight:
-                dist[adj_v] = curr_dist + weight
-                travel_pq.push((curr_dist + weight, adj_v))
-    print(dist)
-    return dist[end_v]
+        for 거리, 이웃_정점 in 간선들[현재_정점]:
+            if 거리들[이웃_정점] > 현재_거리 + 거리:
+                거리들[이웃_정점] = 현재_거리 + 거리
+                여행_힙.넣기((현재_거리 + 거리, 이웃_정점))
+    if 거리들[끝_정점] == 최고값:
+        raise 연결_안됨_예외
+    return 거리들[끝_정점]
 
 
-num_v, num_e = map(int, read().split())
-edges = [list() for _ in range(num_v + 1)]
+갯수_정점, 갯수_간선 = map(정수, 읽기().split())
+간선들 = [list() for _ in 범위(갯수_정점 + 1)]
 
-for _ in range(num_e):
-    start, end, weight = map(int, read().split())
-    edges[start].append((weight, end))
-    edges[end].append((weight, start))
+for _ in 범위(갯수_간선):
+    시작, 끝, 거리 = map(정수, 읽기().split())
+    간선들[시작].append((거리, 끝))
+    간선들[끝].append((거리, 시작))
 
-first_mid_v, second_mid_v = map(int, read().split())
+첫_경유점, 두번째_경유점 = map(정수, 읽기().split())
 
-print("-----")
+try:
+    첫_경로 = (
+        최단거리_구하기(1, 첫_경유점, 간선들)
+        + 최단거리_구하기(첫_경유점, 두번째_경유점, 간선들)
+        + 최단거리_구하기(두번째_경유점, 갯수_정점, 간선들)
+    )
 
-print(
-    get_shortest_path(1, first_mid_v, edges)
-    + get_shortest_path(first_mid_v, second_mid_v, edges)
-    + get_shortest_path(second_mid_v, num_v, edges)
-)
+    두번째_경로 = (
+        최단거리_구하기(1, 두번째_경유점, 간선들)
+        + 최단거리_구하기(두번째_경유점, 첫_경유점, 간선들)
+        + 최단거리_구하기(첫_경유점, 갯수_정점, 간선들)
+    )
 
-print(f"{first_mid_v} {second_mid_v} {num_v}")
+    if 첫_경로 > 두번째_경로:
+        출력하기(두번째_경로)
+    else:
+        출력하기(첫_경로)
 
-print(
-    f"{get_shortest_path(1, first_mid_v, edges)} {get_shortest_path(first_mid_v, second_mid_v, edges)} {get_shortest_path(second_mid_v, num_v, edges)}"
-)
-
-# https://www.acmicpc.net/board/view/124591
-# 연결이 안된 경우에 대해서 핸들링 필요(-1 출력)
-# 5 4
-# 1 4 1
-# 1 3 1
-# 3 2 1
-# 2 5 1
-# 3 4
-# 답이 5가 나와야 하는데 7이 나옴. 중복 경로가 원인
+except 연결_안됨_예외:
+    출력하기(-1)
