@@ -11,7 +11,7 @@ T = TypeVar("T")
 Weight: TypeAlias = int
 Vertex: TypeAlias = int
 Edge: TypeAlias = tuple[Weight, Vertex]
-ResultDict = TypedDict("PathResult", {"path": list[Vertex], "weight": Weight})
+PathResult = TypedDict("PathResult", {"path": list[Vertex], "weight": Weight})
 
 
 class NotConnectedGraphException(Exception):
@@ -65,7 +65,7 @@ def get_shortest_path(start_v: Vertex, end_v: Vertex, edges: list[list[Edge]]):
         path_deque.appendleft(curr_v)
         curr_v = smallest_weights[curr_v][1]
 
-    result_dict: ResultDict = {
+    result_dict: PathResult = {
         "path": list(path_deque),
         "weight": smallest_weights[end_v][0],
     }
