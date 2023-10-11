@@ -51,6 +51,11 @@ def get_smallest_weights_bellman_ford(
         for curr_v in range(1, num_v + 1):
             for weight, end_v in edges[curr_v]:
                 if upper_bound[end_v] > upper_bound[curr_v] + weight:
+                    if (
+                        upper_bound[end_v] == maxsize
+                        and upper_bound[curr_v] == maxsize
+                    ):
+                        continue
                     upper_bound[end_v] = upper_bound[curr_v] + weight
                     is_updated = True
         if not is_updated:
@@ -63,7 +68,7 @@ def get_smallest_weights_bellman_ford(
 
 
 num_v, num_e = map(int, read().split())
-edges = [list() for _ in range(num_v + 1)]
+edges: list[list[Edge]] = [list() for _ in range(num_v + 1)]
 for _ in range(num_e):
     start, end, weight = map(int, read().split())
     edges[start].append((weight, end))
