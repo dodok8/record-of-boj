@@ -1,3 +1,5 @@
+# 타임머신
+
 import heapq as pq
 from sys import stdin, maxsize
 from typing import TypeVar, Generic, TypeAlias
