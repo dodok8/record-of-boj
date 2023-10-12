@@ -80,15 +80,22 @@ for _ in range(int(read())):
         start, end, abs_weight = map(int, read().split())
         edges[start].append((-abs_weight, end))
 
-    start_v = 1
-    end_v = 1
-    try:
-        smallest_weight = get_smallest_weight_bellman_ford(
-            start_v, end_v, edges
-        )
-        # 이 값이 0 이라는 건 음수 사이클에 연결이 안되었다는 뜻이니, 과거로 못 되돌아 간다.
-        print("NO" if smallest_weight >= 0 else "YES")
-    except NotConnectedGraphException:
-        print("NO")
-    except MinusCycleException:
+    is_possible = False
+
+    for start_v in range(1, num_v + 1):
+        is_possible = False
+        end_v = start_v
+        try:
+            smallest_weight = get_smallest_weight_bellman_ford(
+                start_v, end_v, edges
+            )
+            if smallest_weight < 0:
+                is_possible = True
+        except NotConnectedGraphException:
+            continue
+        except MinusCycleException:
+            is_possible = True
+    if is_possible:
         print("YES")
+    else:
+        print("NO")
