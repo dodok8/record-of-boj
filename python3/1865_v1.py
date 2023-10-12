@@ -86,9 +86,9 @@ for _ in range(int(read())):
         smallest_weight = get_smallest_weight_bellman_ford(
             start_v, end_v, edges
         )
-        print("NO")
+        # 이 값이 0 이라는 건 음수 사이클에 연결이 안되었다는 뜻이니, 과거로 못 되돌아 간다.
+        print("NO" if smallest_weight >= 0 else "YES")
     except NotConnectedGraphException:
-        # 근데 이게 나올 수가 없는데?
         print("NO")
     except MinusCycleException:
         print("YES")
