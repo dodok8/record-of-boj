@@ -41,16 +41,16 @@ class Heap(Generic[T]):
         return len(self.data)
 
 
-def get_smallest_weight_bellman_ford(
-    start_v: Vertex, end_v: Vertex, edges: list[list[Edge]]
+def check_no_minus_cycle_bellman_ford(
+    start_v: Vertex, edges: list[list[Edge]]
 ):
-    num_v = len(edges) - 1
-    upper_bound: list[Weight] = [maxsize for _ in range(num_v + 1)]
+    num_v = len(edges)
+    upper_bound: list[Weight] = [maxsize for _ in range(num_v)]
     upper_bound[start_v] = 0
     is_updated = False
     for count in range(num_v):
         is_updated = False
-        for curr_v in range(1, num_v + 1):
+        for curr_v in range(0, num_v):
             for weight, adj_v in edges[curr_v]:
                 if upper_bound[adj_v] > upper_bound[curr_v] + weight:
                     if (
@@ -63,10 +63,8 @@ def get_smallest_weight_bellman_ford(
         if not is_updated:
             break
         if is_updated and count == num_v - 1:
-            raise MinusCycleException
-    if upper_bound[end_v] == maxsize:
-        raise NotConnectedGraphException
-    return upper_bound[end_v]
+            return False
+    return True
 
 
 for _ in range(int(read())):
@@ -80,23 +78,16 @@ for _ in range(int(read())):
         start, end, abs_weight = map(int, read().split())
         edges[start].append((-abs_weight, end))
 
-    is_possible = False
-
-    for start_v in range(1, num_v + 1):
-        is_possible = False
-        end_v = start_v
-        try:
-            smallest_weight = get_smallest_weight_bellman_ford(
-                start_v, end_v, edges
-            )
-            if smallest_weight < 0:
-                is_possible = True
-                break
-        except MinusCycleException:
-            is_possible = True
-            break
-            # 가능하면 탐사할 더 탐사할 필요가 없음.
-    if is_possible:
-        print("YES")
-    else:
+    for vertex in range(1, num_v + 1):
+        edges[0].append((0, vertex))
+    """
+    0번째 점(가상의 점)을 출발점으로  잡고, 이를 모든 점과 연결하는 0짜리 간선들을 추가한다.
+    0번째 점을 탐색해서 밝혀지는 음수 사이클은 다 이미 기존에 존재하는 사이클이고,
+    0번째 점은 모든 점과 연결되어 있다.
+    따라서 연결 그래프를 아닐 경우를 대비해서 모든 점에서 시작해서 체크할 필요가 없다.
+    """
+    start_v = 0
+    if check_no_minus_cycle_bellman_ford(start_v, edges):
         print("NO")
+    else:
+        print("YES")
