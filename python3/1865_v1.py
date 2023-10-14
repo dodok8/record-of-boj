@@ -51,14 +51,14 @@ def get_smallest_weight_bellman_ford(
     for count in range(num_v):
         is_updated = False
         for curr_v in range(1, num_v + 1):
-            for weight, end_v in edges[curr_v]:
-                if upper_bound[end_v] > upper_bound[curr_v] + weight:
+            for weight, adj_v in edges[curr_v]:
+                if upper_bound[adj_v] > upper_bound[curr_v] + weight:
                     if (
-                        upper_bound[end_v] == maxsize
+                        upper_bound[adj_v] == maxsize
                         and upper_bound[curr_v] == maxsize
                     ):
                         continue
-                    upper_bound[end_v] = upper_bound[curr_v] + weight
+                    upper_bound[adj_v] = upper_bound[curr_v] + weight
                     is_updated = True
         if not is_updated:
             break
@@ -91,10 +91,11 @@ for _ in range(int(read())):
             )
             if smallest_weight < 0:
                 is_possible = True
-        except NotConnectedGraphException:
-            continue
+                break
         except MinusCycleException:
             is_possible = True
+            break
+            # 가능하면 탐사할 더 탐사할 필요가 없음.
     if is_possible:
         print("YES")
     else:
