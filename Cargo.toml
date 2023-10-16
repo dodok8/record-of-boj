@@ -8,5 +8,9 @@ edition = "2021"
 [dependencies]
 
 [[bin]]
-path = "rust"
 name="main"
+path = "rust/main.rs"
+
+[[example]]
+name="1485_v1"
+path="rust/1485_v1.rs"
