@@ -1,0 +1,41 @@
+{
+  // Place your record-of-boj 작업 영역 snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and
+  // description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope
+  // is left empty or omitted, the snippet gets applied to all languages. The prefix is what is
+  // used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+  // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders.
+  // Placeholders with the same ids are connected.
+  // Example:
+  "def read": {
+    "scope": "python",
+    "prefix": "read",
+    "body": ["from sys import stdin", "read = lambda: stdin.readline().rstrip()"],
+    "description": "Make simple fast input function"
+  },
+	"class Heap": {
+		"scope": "python",
+		"prefix"  "Heap",
+		"body": [
+			"import heapq as pq",
+			"from typing import Generic, TypeVar"
+			"T = TypeVar("T")"
+			"class Heap(Generic[T]):",
+			"    def __init__(self, data: list[T] = []) -> None:",
+			"        self.data = data.copy()",
+			"				pq.heapify(self.data)",
+			"		def push(self, item: T) -> None:",
+			"				pq.heappush(self.data, item)",
+			"       return self"
+			"		def pop(self) -> T:",
+			"        return pq.heappop(self.data)",
+			"		def top(self) -> T:",
+			"        return self.data[0]",
+			"    def extend(self, items: list[T]):",
+			"        self.data.extend(items)",
+			"				 pq.heapify(self.data)",
+			"        return self",
+			"		 def __len__(self) -> int:",
+			"        return len(self.data)",
+		]
+	}
+}
