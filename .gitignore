@@ -197,3 +197,7 @@ pyrightconfig.json
 # Added by cargo
 
 /target
+
+# Input
+
+input/*
