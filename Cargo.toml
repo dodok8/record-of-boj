@@ -11,6 +11,9 @@ edition = "2021"
 name="main"
 path = "rust/main.rs"
 
-[[example]]
+[[bin]]
 name="1485_v1"
 path="rust/1485_v1.rs"
+
+name="11404_v1"
+path="rust/11404_v1.rs"
