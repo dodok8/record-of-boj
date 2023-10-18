@@ -1,12 +1,12 @@
 // 절대값 힙
 
+use core::cmp::Ordering;
 use core::fmt;
+use std::cmp::Reverse;
 use std::collections::BinaryHeap;
 use std::error::Error;
 use std::fmt::{Display, Write};
 use std::io::{stdin, Read};
-
-use core::cmp::Ordering;
 
 #[derive(PartialEq, Eq)]
 struct Abs<T>(T);
@@ -26,7 +26,7 @@ impl PartialOrd for Abs<i32> {
 impl Ord for Abs<i32> {
     fn cmp(&self, other: &Self) -> Ordering {
         if self.0.abs() == other.0.abs() {
-            self.cmp(other)
+            self.0.cmp(&other.0)
         } else {
             self.0.abs().cmp(&other.0.abs())
         }
@@ -41,21 +41,21 @@ fn main() -> Result<(), Box<dyn Error>> {
         .split_ascii_whitespace()
         .map(str::parse::<i32>)
         .flatten();
-    let mut abs_heap: BinaryHeap<Abs<i32>> = BinaryHeap::new();
+    let mut abs_heap: BinaryHeap<Reverse<Abs<i32>>> = BinaryHeap::new();
     let test_count = input.next().unwrap();
     for _ in 0..test_count as usize {
         let given_value = input.next().unwrap();
         if given_value == 0 {
             match abs_heap.pop() {
                 Some(pop_value) => {
-                    writeln!(output, "{}", pop_value).unwrap();
+                    writeln!(output, "{}", pop_value.0).unwrap();
                 }
                 _ => {
                     writeln!(output, "0").unwrap();
                 }
             }
         } else {
-            abs_heap.push(Abs(given_value));
+            abs_heap.push(Reverse(Abs(given_value)));
         }
     }
     print!("{}", output);
