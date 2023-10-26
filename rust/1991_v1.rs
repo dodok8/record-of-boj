@@ -1,4 +1,4 @@
-// 후위 표기식
+// 트리 순회
 use std::error::Error;
 use std::fmt::Write;
 use std::io::{stdin, Read};
