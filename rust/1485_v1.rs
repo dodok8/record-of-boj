@@ -11,10 +11,7 @@ fn main() {
     let mut output = String::new();
     let mut input = String::new();
     stdin().read_to_string(&mut input).unwrap();
-    let mut input = input
-        .split_ascii_whitespace()
-        .map(str::parse::<i32>)
-        .flatten();
+    let mut input = input.split_ascii_whitespace().flat_map(str::parse::<i32>);
     let test_case: i32 = input.next().unwrap();
     for _ in 0..test_case {
         let mut points: Vec<Point2D> = Vec::new();
@@ -32,9 +29,7 @@ fn main() {
 
         edges.sort();
 
-        if edges[5] != edges[4] {
-            writeln!(output, "0").unwrap();
-        } else if edges[0] != edges[2] || edges[2] != edges[3] {
+        if edges[5] != edges[4] || edges[0] != edges[2] || edges[2] != edges[3] {
             writeln!(output, "0").unwrap();
         } else {
             writeln!(output, "1").unwrap();
