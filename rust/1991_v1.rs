@@ -1,8 +1,10 @@
-// 트리 순회
+// 후위 표기식
 use std::error::Error;
 use std::fmt::Write;
 use std::io::{stdin, Read};
-struct Node<T: Clone> {
+
+#[derive(Clone)]
+struct Node<T: Copy> {
     index: usize,
     data: T,
     left: Option<usize>,
@@ -10,27 +12,26 @@ struct Node<T: Clone> {
     parent: Option<usize>,
 }
 
-struct BinaryTree<T: Clone> {
+#[derive(Clone)]
+struct BinaryTree<T: Copy> {
     nodes: Vec<Node<T>>,
     root_idx: usize,
 }
 
 impl<T> BinaryTree<T>
 where
-    T: Clone,
+    T: Copy,
 {
     fn get_preorder(&self) -> Vec<usize> {
         let mut result: Vec<usize> = Vec::new();
 
-        fn _preorder<T: Clone>(curr_idx: usize, nodes: &Vec<Node<T>>, result: &mut Vec<usize>) {
+        fn _preorder<T: Copy>(curr_idx: usize, nodes: &Vec<Node<T>>, result: &mut Vec<usize>) {
             result.push(curr_idx);
-            match nodes[curr_idx].left {
-                Some(value) => _preorder(value, nodes, result),
-                _ => (),
+            if let Some(value) = nodes[curr_idx].left {
+                _preorder(value, nodes, result)
             }
-            match nodes[curr_idx].right {
-                Some(value) => _preorder(value, nodes, result),
-                _ => (),
+            if let Some(value) = nodes[curr_idx].right {
+                _preorder(value, nodes, result)
             }
         }
 
@@ -41,15 +42,13 @@ where
     fn get_inorder(&self) -> Vec<usize> {
         let mut result: Vec<usize> = Vec::new();
 
-        fn _inorder<T: Clone>(curr_idx: usize, nodes: &Vec<Node<T>>, result: &mut Vec<usize>) {
-            match nodes[curr_idx].left {
-                Some(value) => _inorder(value, nodes, result),
-                _ => (),
+        fn _inorder<T: Copy>(curr_idx: usize, nodes: &Vec<Node<T>>, result: &mut Vec<usize>) {
+            if let Some(value) = nodes[curr_idx].left {
+                _inorder(value, nodes, result)
             }
             result.push(curr_idx);
-            match nodes[curr_idx].right {
-                Some(value) => _inorder(value, nodes, result),
-                _ => (),
+            if let Some(value) = nodes[curr_idx].right {
+                _inorder(value, nodes, result)
             }
         }
 
@@ -59,14 +58,12 @@ where
     fn get_postorder(&self) -> Vec<usize> {
         let mut result: Vec<usize> = Vec::new();
 
-        fn _postorder<T: Clone>(curr_idx: usize, nodes: &Vec<Node<T>>, result: &mut Vec<usize>) {
-            match nodes[curr_idx].left {
-                Some(value) => _postorder(value, nodes, result),
-                _ => (),
+        fn _postorder<T: Copy>(curr_idx: usize, nodes: &Vec<Node<T>>, result: &mut Vec<usize>) {
+            if let Some(value) = nodes[curr_idx].left {
+                _postorder(value, nodes, result)
             }
-            match nodes[curr_idx].right {
-                Some(value) => _postorder(value, nodes, result),
-                _ => (),
+            if let Some(value) = nodes[curr_idx].right {
+                _postorder(value, nodes, result)
             }
             result.push(curr_idx);
         }
@@ -97,33 +94,27 @@ fn main() -> Result<(), Box<dyn Error>> {
     }
     for _idx in 0..num_nodes {
         let node_idx = get_alphabet_order(tokens.next().unwrap().chars().next().unwrap()).unwrap();
-        match get_alphabet_order(tokens.next().unwrap().chars().next().unwrap()) {
-            Some(value) => {
-                tree.nodes[node_idx].left = Some(value);
-                tree.nodes[value].parent = Some(node_idx);
-            }
-            _ => {}
+        if let Some(value) = get_alphabet_order(tokens.next().unwrap().chars().next().unwrap()) {
+            tree.nodes[node_idx].left = Some(value);
+            tree.nodes[value].parent = Some(node_idx);
         };
-        match get_alphabet_order(tokens.next().unwrap().chars().next().unwrap()) {
-            Some(value) => {
-                tree.nodes[node_idx].right = Some(value);
-                tree.nodes[value].parent = Some(node_idx);
-            }
-            _ => {}
+        if let Some(value) = get_alphabet_order(tokens.next().unwrap().chars().next().unwrap()) {
+            tree.nodes[node_idx].right = Some(value);
+            tree.nodes[value].parent = Some(node_idx);
         };
     }
     for num in tree.get_preorder() {
         write!(output, "{}", get_alphabet_from_num(num)).unwrap();
     }
-    writeln!(output, "").unwrap();
+    writeln!(output).unwrap();
     for num in tree.get_inorder() {
         write!(output, "{}", get_alphabet_from_num(num)).unwrap();
     }
-    writeln!(output, "").unwrap();
+    writeln!(output).unwrap();
     for num in tree.get_postorder() {
         write!(output, "{}", get_alphabet_from_num(num)).unwrap();
     }
-    writeln!(output, "").unwrap();
+    writeln!(output).unwrap();
 
     println!("{}", output);
     Ok(())
