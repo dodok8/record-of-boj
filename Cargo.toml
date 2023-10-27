@@ -38,3 +38,7 @@ path="rust/7568_v1.rs"
 [[example]]
 name="1991_v1"
 path="rust/1991_v1.rs"
+
+[[example]]
+name="1546_v1"
+path="rust/1546_v1.rs"
