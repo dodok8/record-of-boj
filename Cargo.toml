@@ -8,89 +8,93 @@ edition = "2021"
 [dependencies]
 
 [[bin]]
-name="main"
+name = "main"
 path = "rust/main.rs"
 
 [[example]]
-name="1485_v1"
-path="rust/1485_v1.rs"
+name = "1485_v1"
+path = "rust/1485_v1.rs"
 
 [[example]]
-name="11404_v1"
-path="rust/11404_v1.rs"
+name = "11404_v1"
+path = "rust/11404_v1.rs"
 
 [[example]]
-name="11868_v1"
-path="rust/11868_v1.rs"
+name = "11868_v1"
+path = "rust/11868_v1.rs"
 
 [[example]]
-name="1389_v1"
-path="rust/1389_v1.rs"
+name = "1389_v1"
+path = "rust/1389_v1.rs"
 
 [[example]]
-name="11286_v1"
-path="rust/11286_v1.rs"
+name = "11286_v1"
+path = "rust/11286_v1.rs"
 
 [[example]]
-name="7568_v1"
-path="rust/7568_v1.rs"
+name = "7568_v1"
+path = "rust/7568_v1.rs"
 
 [[example]]
-name="1991_v1"
-path="rust/1991_v1.rs"
+name = "1991_v1"
+path = "rust/1991_v1.rs"
 
 [[example]]
-name="1546_v1"
-path="rust/1546_v1.rs"
+name = "1546_v1"
+path = "rust/1546_v1.rs"
 
 [[example]]
-name="5639_v1"
-path="rust/5639_v1.rs"
+name = "5639_v1"
+path = "rust/5639_v1.rs"
 
 [[example]]
-name="5582_v1"
-path="rust/5582_v1.rs"
+name = "5582_v1"
+path = "rust/5582_v1.rs"
 
 [[example]]
-name="9251_v1"
-path="rust/9251_v1.rs"
+name = "9251_v1"
+path = "rust/9251_v1.rs"
 
 [[example]]
-name="2448_v1"
-path="rust/2448_v1.rs"
+name = "2448_v1"
+path = "rust/2448_v1.rs"
 
 [[example]]
-name="11725_v1"
-path="rust/11725_v1.rs"
+name = "11725_v1"
+path = "rust/11725_v1.rs"
 
 [[example]]
-name="1967_v1"
-path="rust/1967_v1.rs"
+name = "1967_v1"
+path = "rust/1967_v1.rs"
 
 [[example]]
-name="15686_v1"
-path="rust/15686_v1.rs"
+name = "15686_v1"
+path = "rust/15686_v1.rs"
 
 [[example]]
-name="15650_v1"
-path="rust/15650_v1.rs"
+name = "15650_v1"
+path = "rust/15650_v1.rs"
 
 [[example]]
-name="15649_v1"
-path="rust/15649_v1.rs"
+name = "15649_v1"
+path = "rust/15649_v1.rs"
 
 [[example]]
-name="15651_v1"
-path="rust/15651_v1.rs"
+name = "15651_v1"
+path = "rust/15651_v1.rs"
 
 [[example]]
-name="15652_v1"
-path="rust/15652_v1.rs"
+name = "15652_v1"
+path = "rust/15652_v1.rs"
 
 [[example]]
-name="15654_v1"
-path="rust/15654_v1.rs"
+name = "15654_v1"
+path = "rust/15654_v1.rs"
 
 [[example]]
-name="15655_v1"
-path="rust/15655_v1.rs"
+name = "15655_v1"
+path = "rust/15655_v1.rs"
+
+[[example]]
+name = "15656_v1"
+path = "rust/15656_v1.rs"
