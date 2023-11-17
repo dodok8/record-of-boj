@@ -1,3 +1,4 @@
+// 플로이드
 use std::cmp;
 use std::fmt::Write;
 use std::io::{stdin, Read};
@@ -51,16 +52,13 @@ fn get_floyd_warshall(edges: &Vec<Vec<Edge>>) -> Result<Vec<Vec<i32>>, MinusCycl
             }
         }
     }
-    return Ok(weights);
+    Ok(weights)
 }
 fn main() {
     let mut output = String::new();
     let mut input = String::new();
     stdin().read_to_string(&mut input).unwrap();
-    let mut input = input
-        .split_ascii_whitespace()
-        .map(str::parse::<i32>)
-        .flatten();
+    let mut input = input.split_ascii_whitespace().flat_map(str::parse::<i32>);
     let num_v = input.next().unwrap();
     let num_e = input.next().unwrap();
     let mut edges: Vec<Vec<Edge>> = vec![vec![]; (num_v + 1) as usize];

@@ -1,3 +1,4 @@
+// N과 M (2)
 use std::error::Error;
 use std::fmt::Write;
 use std::io::{stdin, Read};
@@ -16,7 +17,6 @@ fn get_combinations(vec: Vec<usize>, n: usize) -> Vec<Vec<usize>> {
 
         for (i, &item) in vec.iter().enumerate() {
             let remaining = vec[i + 1..].to_vec();
-            // 이 부분만 현재 원소 지우는 걸로 하면 permutation 이겠구만
             prefix.push(item);
             combinations_helper(&remaining, n - 1, prefix, result);
             prefix.pop();

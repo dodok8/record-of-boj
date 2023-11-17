@@ -1,3 +1,4 @@
+// N과 M (1)
 use std::error::Error;
 use std::fmt::Write;
 use std::io::{stdin, Read};

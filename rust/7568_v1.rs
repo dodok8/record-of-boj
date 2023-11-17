@@ -12,8 +12,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     stdin().read_to_string(&mut input).unwrap();
     let mut input = input
         .split_ascii_whitespace()
-        .map(str::parse::<i32>)
-        .flatten();
+        .flat_map(str::parse::<i32>);
     let num_people = input.next().unwrap() as usize;
     let mut dungchis: Vec<Dungchi> = Vec::new();
     for _ in 0..num_people {

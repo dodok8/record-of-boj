@@ -1,5 +1,5 @@
+// TODO: 이진 검색 트리
 use std::collections::VecDeque;
-// 이진 검색 트리
 use std::error::Error;
 use std::fmt::Write;
 use std::io::{stdin, Read};

@@ -1,3 +1,4 @@
+//치킨 배달
 use std::error::Error;
 use std::fmt::Write;
 use std::io::{stdin, Read};
@@ -57,7 +58,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let mut smallest_chicken_distance = usize::MAX;
     for chicken_combination in chicken_combinations {
-        let mut curr_chicken_distance = 0 as usize;
+        let mut curr_chicken_distance = 0_usize;
         for house in &houses {
             curr_chicken_distance += chicken_combination
                 .iter()

@@ -1,5 +1,4 @@
 // 절대값 힙
-
 use core::cmp::Ordering;
 use core::fmt;
 use std::cmp::Reverse;
@@ -37,10 +36,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut output = String::new();
     let mut input = String::new();
     stdin().read_to_string(&mut input).unwrap();
-    let mut input = input
-        .split_ascii_whitespace()
-        .map(str::parse::<i32>)
-        .flatten();
+    let mut input = input.split_ascii_whitespace().flat_map(str::parse::<i32>);
     let mut abs_heap: BinaryHeap<Reverse<Abs<i32>>> = BinaryHeap::new();
     let test_count = input.next().unwrap();
     for _ in 0..test_count as usize {

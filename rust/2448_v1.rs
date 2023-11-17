@@ -1,3 +1,4 @@
+// 별 찍기 - 11
 use std::error::Error;
 use std::fmt::Write;
 use std::io::{stdin, Read};
