@@ -1,4 +1,4 @@
-.//N과 M (8)
+//N과 M (8)
 use std::error::Error;
 use std::fmt::Write;
 use std::io::{stdin, Read};
