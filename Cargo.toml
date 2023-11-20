@@ -102,3 +102,7 @@ path = "rust/15656_v1.rs"
 [[example]]
 name = "15657_v1"
 path = "rust/15657_v1.rs"
+
+[[example]]
+name = "2743_v1"
+path = "rust/2743_v1.rs"
