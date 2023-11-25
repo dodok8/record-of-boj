@@ -40,7 +40,8 @@ fn calc_queens(
         Ok(1)
     } else {
         let mut sum = 0;
-        for xdx in (last_rows + 1)..n {
+        let xdx = last_rows + 1;
+        if xdx < queen_status.n {
             for ydx in 0..n {
                 if queen_status.judge_valid_place(xdx, ydx) {
                     queen_status.locate_queen(xdx, ydx);
@@ -49,6 +50,7 @@ fn calc_queens(
                 }
             }
         }
+
         Ok(sum)
     }
 }
@@ -68,7 +70,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     };
     let mut result = 0;
     for x in 0..n {
-        for y in 0..n {
+        for y in x..n {
             queen_status.locate_queen(x, y);
             result += calc_queens(n - 1, x, &mut queen_status).unwrap();
             queen_status.remove_queen(x, y);
