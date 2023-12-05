@@ -1,1 +1,1 @@
-examples/** linguist-detectable=true
+examples/* linguist-vendored=true
