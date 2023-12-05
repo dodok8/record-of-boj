@@ -9,4 +9,4 @@ edition = "2021"
 
 [[bin]]
 name = "main"
-path = "rust/main.rs"
+path = "bin/main.rs"
