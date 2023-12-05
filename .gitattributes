@@ -1,1 +1,1 @@
-/examples/* linguist-detectable=true
+/examples/*.rs linguist-language=Rust
