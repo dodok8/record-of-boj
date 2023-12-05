@@ -1,0 +1,20 @@
+{
+  "version": "0.2.0",
+  "tasks": [
+    {
+      "label": "rust: run with stdin",
+      "type": "shell",
+      "command": "./run.sh",
+      "args": [
+        "${fileBasenameNoExtension}",
+        "${fileExtname}"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [
+        "$rustc"
+      ]
+    }
+  ]
+}
