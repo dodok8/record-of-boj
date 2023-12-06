@@ -1,3 +1,4 @@
+// 지민이의 테러
 use std::error::Error;
 use std::fmt::Write;
 use std::io::{stdin, Read};
@@ -13,7 +14,6 @@ fn get_polygon_inside(polygon_v: &Vec<Vector>, point: &Vector) -> bool {
     let mut count_crossed = 0;
     for idx in 0..polygon_v.len() {
         let jdx = (idx + 1) % polygon_v.len();
-        // 선분 위의 점일 때 true 반환 해야 하는데 씨발 못하겠음.
         if get_ccw(&polygon_v[idx], &polygon_v[jdx], point) == 0
             && (point.0 > polygon_v[idx].0) != (point.0 > polygon_v[jdx].0)
         {
