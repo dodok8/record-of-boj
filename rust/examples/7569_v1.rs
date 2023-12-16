@@ -71,8 +71,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     }
 
     let mut travel_queue = VecDeque::from(start_points);
-
-    loop {
+    let mut end_point = (0, 0, 0);
+    while !travel_queue.is_empty() {
         let curr_point = travel_queue.pop_front().unwrap();
         for point in get_connected_points(curr_point, h as i32, m as i32, n as i32, &result) {
             result[point.0][point.1][point.2] =
@@ -81,18 +81,19 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
 
         if travel_queue.is_empty() {
-            if check_ready(&result) {
-                writeln!(
-                    output,
-                    "{}",
-                    result[curr_point.0][curr_point.1][curr_point.2] - 1
-                )
-                .unwrap();
-            } else {
-                writeln!(output, "-1").unwrap();
-            }
-            break;
+            end_point = curr_point;
         }
+    }
+
+    if check_ready(&result) {
+        writeln!(
+            output,
+            "{}",
+            result[end_point.0][end_point.1][end_point.2] - 1
+        )
+        .unwrap();
+    } else {
+        writeln!(output, "-1").unwrap();
     }
 
     print!("{}", output);
