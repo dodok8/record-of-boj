@@ -16,14 +16,18 @@ fn main() -> Result<(), Box<dyn Error>> {
         data.push(input.next().unwrap());
     }
     let mut len_lis = vec![0_usize; n];
+    let mut result = 0;
     for idx in 0..n {
         for jdx in 0..idx {
             if data[idx] > data[jdx] {
                 len_lis[idx] = max(len_lis[idx], len_lis[jdx] + 1);
             }
+            if result < len_lis[idx] {
+                result = len_lis[idx];
+            }
         }
     }
-    writeln!(output, "{}", len_lis[n - 1] + 1).unwrap();
+    writeln!(output, "{}", result + 1).unwrap();
     print!("{}", output);
     Ok(())
 }
