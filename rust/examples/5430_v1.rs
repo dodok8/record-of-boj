@@ -35,7 +35,9 @@ impl Ac {
                 result.push(',');
             }
         }
-        result.pop(); // 마지막 쉼표 제거
+        if !self.deque.is_empty() {
+            result.pop();
+        }
         result.push(']');
         result
     }
@@ -48,12 +50,9 @@ fn main() -> Result<(), Box<dyn Error>> {
     for _ in 0..input.next().unwrap().parse::<usize>().unwrap() {
         let commands = input.next().unwrap();
         let _len = input.next().unwrap().parse::<usize>().unwrap();
-        let s = input.next().unwrap().trim_matches('[').trim_matches(']');
-        let vec: Vec<usize> = s
-            .split(',')
-            .filter(|s| !s.trim().is_empty())
-            .map(|s| s.parse::<usize>().unwrap())
-            .collect();
+        let g = input.next().unwrap();
+        let s = g.trim_matches('[').trim_matches(']');
+        let vec: Vec<usize> = s.split(',').flat_map(str::parse::<usize>).collect();
         let mut curr_ac = Ac {
             reversed: false,
             deque: VecDeque::from(vec),
