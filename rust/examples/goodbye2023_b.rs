@@ -57,13 +57,16 @@ fn main() -> Result<(), Box<dyn Error>> {
             }
             continue;
         }
-
-        if let Some(next_range) = get_intersection(&curr_range, &ranges[curr_idx + 1].t) {
-            travel_stack.push_back(((curr_idx + 1, num_lie), next_range));
+        if num_lie <= curr_range.1 {
+            if let Some(next_range) = get_intersection(&curr_range, &ranges[curr_idx + 1].t) {
+                travel_stack.push_back(((curr_idx + 1, num_lie), next_range));
+            }
         }
 
-        if let Some(next_range) = get_intersection(&curr_range, &ranges[curr_idx + 1].f) {
-            travel_stack.push_back(((curr_idx + 1, num_lie + 1), next_range));
+        if num_lie < curr_range.1 {
+            if let Some(next_range) = get_intersection(&curr_range, &ranges[curr_idx + 1].f) {
+                travel_stack.push_back(((curr_idx + 1, num_lie + 1), next_range));
+            }
         }
     }
     results.sort();
