@@ -1,3 +1,4 @@
+// 거짓말
 use std::cmp::{max, min};
 use std::collections::VecDeque;
 use std::error::Error;
@@ -10,8 +11,8 @@ struct Range {
 }
 
 fn get_intersection(curr: &(i64, i64), other: &(i64, i64)) -> Option<(i64, i64)> {
-    let start = std::cmp::max(curr.0, other.0);
-    let end = std::cmp::min(curr.1, other.1);
+    let start = max(curr.0, other.0);
+    let end = min(curr.1, other.1);
     if start > end {
         None
     } else {
