@@ -27,24 +27,31 @@ fn main() -> Result<(), Box<dyn Error>> {
         let k = input.next().unwrap();
         if k > 0 {
             let k = k as usize;
-            for idx in k..(n + 1) {
-                num_ge[idx] += 1;
-            }
+            num_ge[k] += 1;
         } else {
             let k = k.abs() as usize;
-            for idx in k..(n + 1) {
-                num_le[idx] += 1;
-            }
+            num_le[k] += 1;
         }
     }
-    println!("{:?}", num_ge);
-    println!("{:?}", num_le);
+
+    for idx in 1..(n + 1) {
+        num_ge[idx] += num_ge[idx - 1];
+        num_le[idx] += num_le[idx - 1];
+    }
 
     let mut results = Vec::new();
+    // num_liar == 0
+    if num_ge[n] - num_ge[0] == 0 {
+        results.push(0);
+    }
     for num_liar in 1..n {
         if num_liar == num_le[num_liar - 1] + num_ge[n] - num_ge[num_liar] {
             results.push(num_liar)
         }
+    }
+    // num_liar == n
+    if num_le[n] == n {
+        results.push(n);
     }
     writeln!(output, "{}", results.len()).unwrap();
     for num in results {
