@@ -13,7 +13,6 @@ use std::io::{stdin, Read};
 /// num_le[k] = x < k 명 이하(le)라는 사람의 누적합
 /// 거짓말 쟁이가 K + 1이상, N 이라고 하는 사람의 수는 num_ge[N] - num_ge[k]이다.
 /// 거짓말 쟁이가 K 명 이하라고 하는 사람의 수는 num_le
-/// num_le 와 num_ge 는 입력 받을 때 만들 수 있다.
 fn main() -> Result<(), Box<dyn Error>> {
     let mut output = String::new();
     let mut input = String::new();
@@ -34,6 +33,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
     }
 
+    // 이러면 O(n)에 누적합을 만들 수 있다.
     for idx in 1..(n + 1) {
         num_ge[idx] += num_ge[idx - 1];
         num_le[idx] += num_le[idx - 1];
@@ -50,7 +50,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
     }
     // num_liar == n
-    if num_le[n] == n {
+    if num_le[n - 1] == n {
         results.push(n);
     }
     writeln!(output, "{}", results.len()).unwrap();
