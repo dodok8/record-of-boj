@@ -6,17 +6,15 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut output = String::new();
     let mut input = String::new();
     stdin().read_to_string(&mut input).unwrap();
-    let mut input = input.split_ascii_whitespace().flat_map(str::parse::<usize>);
+    let mut input = input.split_ascii_whitespace().flat_map(str::parse::<i64>);
 
-    let n = input.next().unwrap();
-    let m = input.next().unwrap();
-    let mut matrix = vec![vec![0; m]; n];
+    let n = input.next().unwrap() as usize;
+    let m = input.next().unwrap() as usize;
     let mut prefix_sum = vec![vec![0; m]; n];
 
     for idx in 0..n {
         for jdx in 0..m {
-            matrix[idx][jdx] = input.next().unwrap();
-            prefix_sum[idx][jdx] = matrix[idx][jdx];
+            prefix_sum[idx][jdx] = input.next().unwrap();
         }
     }
 
@@ -33,10 +31,10 @@ fn main() -> Result<(), Box<dyn Error>> {
     }
 
     for _ in 0..input.next().unwrap() {
-        let i = input.next().unwrap() - 1;
-        let j = input.next().unwrap() - 1;
-        let x = input.next().unwrap() - 1;
-        let y = input.next().unwrap() - 1;
+        let i = input.next().unwrap() as usize - 1;
+        let j = input.next().unwrap() as usize - 1;
+        let x = input.next().unwrap() as usize - 1;
+        let y = input.next().unwrap() as usize - 1;
 
         let mut result = prefix_sum[x][y];
 
