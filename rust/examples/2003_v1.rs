@@ -21,7 +21,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut idx = 1;
     let mut jdx = 1;
 
-    while jdx <= n && idx <= jdx {
+    while jdx <= n {
         match (sums[jdx] - sums[idx - 1]).cmp(&m) {
             std::cmp::Ordering::Equal => {
                 count += 1;
@@ -32,6 +32,9 @@ fn main() -> Result<(), Box<dyn Error>> {
             }
             std::cmp::Ordering::Greater => {
                 idx += 1;
+                if idx > jdx {
+                    jdx = idx;
+                }
             }
         }
     }
