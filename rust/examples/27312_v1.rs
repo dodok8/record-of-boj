@@ -35,7 +35,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
     }
 
-    let mut available_nums: Vec<HashSet<usize>> = vec![HashSet::new()];
+    let mut available_nums: Vec<HashSet<usize>> = vec![];
     for a in vec_a {
         available_nums.push(HashSet::from_iter(1..(a + 1)));
     }
