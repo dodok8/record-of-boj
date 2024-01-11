@@ -3,7 +3,7 @@
 use std::collections::HashSet;
 use std::error::Error;
 use std::fmt::Write;
-use std::io::{stdin, Read};
+use std::io::stdin;
 use std::iter::FromIterator;
 
 fn main() -> Result<(), Box<dyn Error>> {
@@ -23,11 +23,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     for idx in 1..(n + 1) {
         let a = input.next().unwrap();
         vec_a[idx] = a;
-        if a < m {
-            vec_q[idx] = vec_q[idx - 1];
-        } else {
-            vec_q[idx] = idx;
-        }
+        vec_q[idx] = idx;
     }
     for idx in 1..(q + 1) {
         if vec_q[idx] == 1 {
@@ -41,12 +37,15 @@ fn main() -> Result<(), Box<dyn Error>> {
     }
 
     for idx in 1..(q + 1) {
-        println!("? {} {}", if idx > m { m } else { idx }, vec_q[idx]);
+        let query_idx = if idx > m { m } else { idx };
+        println!("? {} {}", query_idx, vec_q[query_idx]);
         let mut input = String::new();
         stdin().read_line(&mut input).unwrap();
         let mut input = input.split_ascii_whitespace().flat_map(str::parse::<usize>);
         let num = input.next().unwrap();
-        available_nums[idx].remove(&num);
+        if available_nums[query_idx].len() > 1 {
+            available_nums[query_idx].remove(&num);
+        }
     }
 
     write!(output, "! ").unwrap();
