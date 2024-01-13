@@ -43,7 +43,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         let mut continued = true;
 
         while !travel_stack.is_empty() {
-            let curr_v = travel_stack.pop_back().unwrap();
+            let curr_v = travel_stack.pop_front().unwrap();
             if curr_v == end_v {
                 break;
             }
@@ -57,6 +57,8 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
 
         let mut curr_v = end_v;
+
+        // 백트래킹 하며 값 업데이트
         while curr_v != 0 {
             status_vertex[curr_v].curr += w;
             if status_vertex[curr_v].curr > status_vertex[curr_v].max {
@@ -65,6 +67,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             }
             curr_v = parent[curr_v];
         }
+        // 대역폭을 더 사용할 수 없을 때 출력 후 종료
         if !continued {
             println!("{}", count - 1);
             break;
