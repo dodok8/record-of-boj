@@ -36,30 +36,37 @@ fn main() -> Result<(), Box<dyn Error>> {
 
         let mut travel_stack: VecDeque<usize> = VecDeque::new();
         let mut visited = vec![false; num_v + 1];
+        let mut parent = vec![0; num_v + 1];
+
         travel_stack.push_back(start_v);
         visited[start_v] = true;
-
         let mut continued = true;
+
         while !travel_stack.is_empty() {
             let curr_v = travel_stack.pop_back().unwrap();
-            status_vertex[curr_v].curr += w;
-            if status_vertex[curr_v].curr > status_vertex[curr_v].max {
-                println!("{}", count - 1);
-                continued = false;
-                break;
-            }
             if curr_v == end_v {
                 break;
             }
             for vertex in &graph[curr_v] {
                 if !visited[*vertex] {
                     visited[*vertex] = true;
+                    parent[*vertex] = curr_v;
                     travel_stack.push_back(*vertex);
                 }
             }
         }
 
+        let mut curr_v = end_v;
+        while curr_v != 0 {
+            status_vertex[curr_v].curr += w;
+            if status_vertex[curr_v].curr > status_vertex[curr_v].max {
+                continued = false;
+                break;
+            }
+            curr_v = parent[curr_v];
+        }
         if !continued {
+            println!("{}", count - 1);
             break;
         }
     }
