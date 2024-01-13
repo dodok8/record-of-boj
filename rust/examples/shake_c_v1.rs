@@ -8,7 +8,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut output = String::new();
     let mut input = String::new();
     stdin().read_to_string(&mut input).unwrap();
-    let primes = [
+    let primes: [u128; 5100] = [
         2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89,
         97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181,
         191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281,
@@ -389,7 +389,8 @@ fn main() -> Result<(), Box<dyn Error>> {
         49597, 49603, 49613, 49627, 49633, 49639, 49663,
     ];
     let mut input = input.split_ascii_whitespace().flat_map(str::parse::<usize>);
-    for prime in primes.iter().take(input.next().unwrap() - 1) {
+    let n = input.next().unwrap();
+    for prime in primes.iter().take(n) {
         write!(output, "{} ", prime).unwrap();
     }
     println!("{}", output);
