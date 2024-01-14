@@ -1,4 +1,4 @@
-// JOI 공원
+// 모비스터디
 
 use std::cmp::Reverse;
 use std::collections::{BinaryHeap, HashSet};
