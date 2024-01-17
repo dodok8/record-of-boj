@@ -17,15 +17,13 @@ fn main() -> Result<(), Box<dyn Error>> {
     }
     fruits.sort_unstable();
 
-    let mut count = 0;
     for fruit in fruits {
         if length >= fruit {
-            count += 1;
             length += 1;
         }
     }
 
-    writeln!(output, "{}", count).unwrap();
+    writeln!(output, "{}", length).unwrap();
     print!("{}", output);
     Ok(())
 }
