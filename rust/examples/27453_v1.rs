@@ -1,6 +1,6 @@
 // 귀엽기만 한 게 아닌 한별 양
 
-use std::collections::{HashSet, VecDeque};
+use std::collections::VecDeque;
 use std::error::Error;
 use std::io::{stdin, Read};
 
@@ -11,7 +11,7 @@ fn get_connected_points(
     max_h: i32,
     max_w: i32,
     map: &Vec<Vec<i32>>,
-    parents: &Vec<Vec<HashSet<(usize, usize)>>>,
+    parents: &Vec<Vec<Vec<bool>>>,
 ) -> Vec<(usize, usize)> {
     let mut connected_points: Vec<(usize, usize)> = Vec::new();
     let deltas = [(1, 0), (-1, 0), (0, 1), (0, -1)];
@@ -26,12 +26,13 @@ fn get_connected_points(
             match curr_p {
                 -1 => continue,
                 _ => {
-                    let curr_set = &parents[h][w];
                     if parent == (h, w) {
                         continue;
                     }
 
-                    if curr_set.contains(&parent) && curr_set.contains(&point) {
+                    if parents[h][w][parent.0 * h + parent.1]
+                        && parents[h][w][point.0 * h + point.1]
+                    {
                         continue;
                     }
 
@@ -82,9 +83,10 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
     }
 
-    let mut parents: Vec<Vec<HashSet<(usize, usize)>>> = vec![vec![HashSet::new(); width]; height];
+    let mut parents: Vec<Vec<Vec<bool>>> =
+        vec![vec![vec![false; height * (height - 1) + width]; width]; height];
     let mut travel_queue = VecDeque::new();
-    parents[start.0][start.1].insert(start);
+    parents[start.0][start.1][start.0 * height + start.1] = true;
     travel_queue.push_back((0, start, start));
     let mut length: i32 = -1;
     while !travel_queue.is_empty() {
@@ -103,8 +105,8 @@ fn main() -> Result<(), Box<dyn Error>> {
             &map,
             &parents,
         ) {
-            parents[point.0][point.1].insert(parent);
-            parents[point.0][point.1].insert(curr_p);
+            parents[point.0][point.1][parent.0 * height + parent.1] = true;
+            parents[point.0][point.1][curr_p.0 * height + curr_p.1] = true;
             travel_queue.push_back((curr_d + 1, curr_p, point));
         }
     }
