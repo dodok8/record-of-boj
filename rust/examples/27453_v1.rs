@@ -27,11 +27,11 @@ fn get_connected_points(
                 -1 => continue,
                 _ => {
                     let curr_set = &parents[h][w];
-                    if curr_set.contains(&parent) && curr_set.contains(&point) {
+                    if parent == (h, w) {
                         continue;
                     }
 
-                    if parent == (h, w) {
+                    if curr_set.contains(&parent) && curr_set.contains(&point) {
                         continue;
                     }
 
