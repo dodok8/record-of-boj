@@ -20,6 +20,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             _ => needs[letter] += 1,
         }
     }
+    needs[6] += needs[6] % 2;
     needs[6] /= 2;
     writeln!(output, "{}", needs.iter().max().unwrap()).unwrap();
     print!("{}", output);
