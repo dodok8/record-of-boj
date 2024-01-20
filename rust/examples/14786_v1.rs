@@ -29,7 +29,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let b = input.next().unwrap();
     let c = input.next().unwrap();
 
-    let mut x_curr = 10.0;
+    let mut x_curr = a + (c - a) / 2.0;
 
     let ans = loop {
         let x_next = get_newton_value(x_curr, a, b, c);
