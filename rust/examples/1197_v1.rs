@@ -6,7 +6,7 @@ use std::error::Error;
 use std::fmt::Write;
 use std::io::{stdin, Read};
 
-type Weight = usize;
+type Weight = i64;
 type Vertex = usize;
 type Edge = (Weight, Vertex);
 
@@ -14,15 +14,15 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut output = String::new();
     let mut input = String::new();
     stdin().read_to_string(&mut input).unwrap();
-    let mut input = input.split_ascii_whitespace().flat_map(str::parse::<usize>);
+    let mut input = input.split_ascii_whitespace().flat_map(str::parse::<i64>);
 
-    let num_v = input.next().unwrap();
-    let num_e = input.next().unwrap();
+    let num_v = input.next().unwrap() as usize;
+    let num_e = input.next().unwrap() as usize;
     let mut edges: Vec<Vec<Edge>> = vec![vec![]; num_v + 1];
 
     for _ in 0..num_e {
-        let start = input.next().unwrap();
-        let end = input.next().unwrap();
+        let start = input.next().unwrap() as usize;
+        let end = input.next().unwrap() as usize;
         let weight: Weight = input.next().unwrap();
         edges[start].push((weight, end));
         edges[end].push((weight, start));
