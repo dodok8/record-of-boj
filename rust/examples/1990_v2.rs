@@ -21,13 +21,13 @@ impl Primes for usize {
     모든 소수는 2를 제외하면 홀수 이므로, 홀수에 대해서만 생각해도 된다.
     2*idx + 3의 소수 여부가 is_prime[idx] 이다.
     또한 홀수 + 홀수 = 짝수 이므로, curr * curr + 2*n*curr 이렇게 해서 홀수만 판정하도록 한다.
-    1 도 홀수니
+    1 도 홀수니 num / 2 -1 개 만큼의 num 이하의 홀수가 있다.
     */
     fn get_primes_le(num: usize) -> Vec<usize> {
-        let mut is_prime = vec![true; num / 2 - 1];
+        let mut is_prime = vec![true; (num + 1) / 2 - 1];
         let mut primes = vec![2];
 
-        for idx in 0..num / 2 - 1 {
+        for idx in 0..(num + 1) / 2 - 1 {
             if is_prime[idx] {
                 let curr = 2 * idx + 3;
                 for next in (curr * curr..=num).step_by(curr * 2) {
