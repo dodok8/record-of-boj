@@ -19,7 +19,7 @@ impl Primes for usize {
     curr이 현재 소수일 경우, 배수 체크는 curr * curr 부터 하는 최적화만 적용된 버전
     curr * some (some < curr)의 경우, some 이 합성수든 소수이던 간에 curr 보다 작은 소수의 배수이므로 이미 지워졌기 때문.
     2와 3의 배수를 제외하면, mod6에 대해 1,5인 수만 남는다.
-    i번째 이 수에 해당하는 값은 6 * (i/2) + 1 + (i%2)*4  이다. / 는 몫 연산이다. 주의!
+    i번째 이 수에 해당하는 값은 6 * (i/2) + 1 + (i%2)*4  이다. / 는 몫 연산이다.
     idx = 0, 1, 2
     a = 0,0,1,1,2,2,3,3, ...
     b = 1,5,1,5,1,5,1,5, ...
@@ -57,6 +57,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let primes: Vec<usize> = usize::get_primes_le(b)
         .iter()
         .filter(|&&x| x >= a)
+        .filter(|&&x| x <= b)
         .cloned()
         .collect();
     for prime in primes {
