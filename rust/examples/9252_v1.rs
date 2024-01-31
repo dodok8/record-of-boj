@@ -29,10 +29,18 @@ impl LongestCommonSubsequence for String {
                     }
                 } else if cache[self_idx - 1][other_idx].0 > cache[self_idx][other_idx - 1].0 {
                     cache[self_idx][other_idx].0 = cache[self_idx - 1][other_idx].0;
-                    cache[self_idx][other_idx].1 = cache[self_idx - 1][other_idx].1;
+                    cache[self_idx][other_idx].1 = if cache[self_idx - 1][other_idx].2 {
+                        (self_idx - 1, other_idx)
+                    } else {
+                        cache[self_idx - 1][other_idx].1
+                    };
                 } else {
                     cache[self_idx][other_idx].0 = cache[self_idx][other_idx - 1].0;
-                    cache[self_idx][other_idx].1 = cache[self_idx][other_idx - 1].1;
+                    cache[self_idx][other_idx].1 = if cache[self_idx][other_idx - 1].2 {
+                        (self_idx, other_idx - 1)
+                    } else {
+                        cache[self_idx][other_idx - 1].1
+                    };
                 }
             }
         }
