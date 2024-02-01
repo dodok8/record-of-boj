@@ -20,7 +20,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         let mut count = 0;
         let mut start = 0_usize;
         let mut end = (n - 1) as usize;
-        let mut closest_sum = 0_i64;
+        let mut closest_sum = i64::MAX;
         loop {
             let sum = nums[start] + nums[end];
             match i64::abs(sum - k).cmp(&i64::abs(closest_sum - k)) {
