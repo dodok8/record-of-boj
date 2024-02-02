@@ -15,9 +15,17 @@ fn get_cache(
         val
     } else {
         cache[end][rest][length] = Some(
-            (get_cache(1, (rest + 3 - end) % 3, length - 1, cache)
-                + get_cache(5, (rest + 3 - end) % 3, length - 1, cache))
-                % 1_000_000_007,
+            (get_cache(
+                1,
+                (rest + 6 - if end == 0 { 5 } else { 1 }) % 3,
+                length - 1,
+                cache,
+            ) + get_cache(
+                5,
+                (rest + 6 - if end == 0 { 5 } else { 1 }) % 3,
+                length - 1,
+                cache,
+            )) % 1_000_000_007,
         );
 
         cache[end][rest][length].unwrap()
@@ -38,13 +46,9 @@ fn main() -> Result<(), Box<dyn Error>> {
     cache[0][0][1] = Some(0);
     cache[0][1][1] = Some(0);
     cache[0][2][1] = Some(1);
-    if n == 1 {
-        let result = 0;
-        writeln!(output, "{}", result).unwrap();
-    } else {
-        let result = get_cache(5, 0, n, &mut cache);
-        writeln!(output, "{}", result).unwrap();
-    }
+
+    let result = get_cache(5, 0, n, &mut cache);
+    writeln!(output, "{}", result).unwrap();
 
     print!("{}", output);
     Ok(())
