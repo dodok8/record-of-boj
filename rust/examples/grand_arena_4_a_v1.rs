@@ -34,7 +34,13 @@ fn main() -> Result<(), Box<dyn Error>> {
         "{}",
         final_contained
             .iter()
-            .map(|x| (1..=*x).product::<usize>())
+            .map(|x| {
+                let mut sum = 0;
+                for i in 1..=*x {
+                    sum += *x - i + 1;
+                }
+                sum
+            })
             .sum::<usize>()
     )
     .unwrap();
