@@ -17,23 +17,19 @@ fn main() -> Result<(), Box<dyn Error>> {
         coins.push(input.next().unwrap());
     }
 
-    let mut cache = vec![usize::MAX; k + 1];
+    let mut cache = vec![usize::MAX - 1; k + 1];
     cache[0] = 0;
     for coin in coins {
         for idx in coin..=k {
             cache[idx] = (cache[idx - coin] + 1).min(cache[idx]);
         }
     }
-    writeln!(
-        output,
-        "{}",
-        if cache[k] == usize::MAX {
-            -1
-        } else {
-            cache[k] as i128
-        }
-    )
-    .unwrap();
+    let result = if cache[k] == usize::MAX - 1 {
+        "-1".to_string()
+    } else {
+        cache[k].to_string()
+    };
+    writeln!(output, "{}", result).unwrap();
     print!("{}", output);
     Ok(())
 }
