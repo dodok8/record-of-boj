@@ -24,7 +24,16 @@ fn main() -> Result<(), Box<dyn Error>> {
             cache[idx] = (cache[idx - coin] + 1).min(cache[idx]);
         }
     }
-    writeln!(output, "{}", cache[k]).unwrap();
+    writeln!(
+        output,
+        "{}",
+        if cache[k] == usize::MAX {
+            -1
+        } else {
+            cache[k] as i128
+        }
+    )
+    .unwrap();
     print!("{}", output);
     Ok(())
 }
