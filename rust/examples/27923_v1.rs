@@ -12,17 +12,21 @@ fn main() -> Result<(), Box<dyn Error>> {
     let num_h = input.next().unwrap();
     let num_c = input.next().unwrap();
     let l = input.next().unwrap();
-    let mut cokes = vec![0_usize; num_h];
+    let mut cokes = vec![0; num_h];
     let mut hamburgers = vec![];
 
     for _ in 0..num_h {
         hamburgers.push(input.next().unwrap());
     }
+    // 구간 누적합을 구하는 imos 법
     for _ in 0..num_c {
         let t = input.next().unwrap() - 1;
-        for idx in t..((t + l).min(num_h)) {
-            cokes[idx] += 1;
-        }
+        cokes[t] = 1;
+        cokes[(t + l).min(num_h - 1)] = -1;
+    }
+
+    for idx in 1..num_h {
+        cokes[idx] += cokes[idx - 1];
     }
     cokes.sort_unstable();
     hamburgers.sort_unstable();
