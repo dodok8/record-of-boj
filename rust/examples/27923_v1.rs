@@ -21,8 +21,10 @@ fn main() -> Result<(), Box<dyn Error>> {
     // 구간 누적합을 구하는 imos 법
     for _ in 0..num_c {
         let t = input.next().unwrap() - 1;
-        cokes[t] = 1;
-        cokes[(t + l).min(num_h - 1)] = -1;
+        cokes[t] += 1;
+        if t + l <= num_h - 1 {
+            cokes[t + l] -= 1;
+        }
     }
 
     for idx in 1..num_h {
@@ -30,6 +32,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     }
     cokes.sort_unstable();
     hamburgers.sort_unstable();
+
     let mut sum = 0;
     for (coke, hamburger) in cokes.iter().zip(hamburgers) {
         sum += hamburger / usize::pow(2, (*coke as u32).min(31));
