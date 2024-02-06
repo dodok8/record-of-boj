@@ -28,7 +28,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     hamburgers.sort_unstable();
     let mut sum = 0;
     for (coke, hamburger) in cokes.iter().zip(hamburgers) {
-        sum += hamburger >> if *coke > 32 { 32 } else { *coke };
+        sum += hamburger / usize::pow(2, if *coke > 31 { 31 } else { *coke as u32 });
     }
     writeln!(output, "{}", sum).unwrap();
     print!("{}", output);
