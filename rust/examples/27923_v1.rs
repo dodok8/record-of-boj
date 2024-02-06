@@ -20,7 +20,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     }
     for _ in 0..num_c {
         let t = input.next().unwrap() - 1;
-        for idx in t..(t + l) {
+        for idx in t..((t + l).min(num_h)) {
             cokes[idx] += 1;
         }
     }
@@ -28,7 +28,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     hamburgers.sort_unstable();
     let mut sum = 0;
     for (coke, hamburger) in cokes.iter().zip(hamburgers) {
-        sum += hamburger / usize::pow(2, if *coke > 31 { 31 } else { *coke as u32 });
+        sum += hamburger / usize::pow(2, (*coke as u32).min(31));
     }
     writeln!(output, "{}", sum).unwrap();
     print!("{}", output);
