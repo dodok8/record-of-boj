@@ -10,14 +10,13 @@ fn main() -> Result<(), Box<dyn Error>> {
     stdin().read_to_string(&mut input).unwrap();
     let mut input = input.split_ascii_whitespace().flat_map(str::parse::<usize>);
     let n = input.next().unwrap();
-    let mut counts = vec![0; n + 1];
+    let mut counts = vec![0; 100_001];
     let mut possible = true;
     for _ in 0..n {
         let soldier = input.next().unwrap();
         counts[soldier] += 1;
         if counts[soldier] > (n + 1) / 2 {
             possible = false;
-            break;
         }
     }
     if possible {
