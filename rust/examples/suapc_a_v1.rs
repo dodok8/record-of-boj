@@ -22,16 +22,13 @@ fn main() -> Result<(), Box<dyn Error>> {
             writeln!(output, "{}", end_b).unwrap();
             continue;
         }
-        let d = [end_b % t_a, t_a - end_b % t_a];
-        let mut curr_step = 0;
-        let mut curr_a = end_b / t_a;
-        let mut curr_t = end_b;
-        while curr_a != v_a {
-            curr_t += d[curr_step % 2];
-            curr_a = curr_t / t_a + (curr_t - end_b) / t_a;
-            curr_step += 1;
+        let curr_a = end_b / t_a;
+        let left_a = v_a - curr_a;
+        if left_a % 2 == 0 {
+            writeln!(output, "{}", end_b + t_a * left_a / 2).unwrap();
+        } else {
+            writeln!(output, "{}", end_b - (end_b % t_a) + t_a * (left_a + 1) / 2).unwrap();
         }
-        writeln!(output, "{}", curr_t).unwrap();
     }
     print!("{}", output);
     Ok(())
