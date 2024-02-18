@@ -23,17 +23,35 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
         stones.push(stone);
     }
-    let mut xor_sum = 0;
-    if count_1 == 0 || count_1 % 2 == 1 {
-        xor_sum = stones.iter().fold(0, |sum, &stone| sum ^ stone);
+    if count_1 == 0 {
+        let xor_sum = stones.iter().fold(0, |sum, &stone| sum ^ stone);
+        if xor_sum == 0 {
+            writeln!(output, "cubelover")?;
+        } else {
+            writeln!(output, "koosaga")?;
+        }
+    } else if count_1 == num {
+        let xor_sum = stones.iter().fold(0, |sum, &stone| sum ^ stone);
+        if xor_sum % 2 == 0 {
+            writeln!(output, "koosaga")?;
+        } else {
+            writeln!(output, "cubelover")?;
+        }
+    } else if count_1 % 2 == 1 {
+        let xor_sum = stones.iter().fold(0, |sum, &stone| sum ^ stone);
+        if xor_sum == 0 {
+            writeln!(output, "cubelover")?;
+        } else {
+            writeln!(output, "koosaga")?;
+        }
     } else {
-        xor_sum = stones.iter().fold(0, |sum, &stone| sum ^ stone);
         stones[some_idx] = 1;
-    }
-    if xor_sum == 0 {
-        writeln!(output, "{}", "cubelover")?;
-    } else {
-        writeln!(output, "{}", "koosaga")?;
+        let xor_sum = stones.iter().fold(0, |sum, &stone| sum ^ stone);
+        if xor_sum == 0 {
+            writeln!(output, "cubelover")?;
+        } else {
+            writeln!(output, "koosaga")?;
+        }
     }
 
     print!("{}", output);
