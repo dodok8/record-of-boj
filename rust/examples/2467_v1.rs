@@ -21,10 +21,10 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut first = 0;
     let mut second = 0;
     loop {
-        let sum = (nums[start] + nums[end]).abs();
-        match sum.cmp(&closest_sum) {
+        let sum = nums[start] + nums[end];
+        match sum.abs().cmp(&closest_sum) {
             std::cmp::Ordering::Less => {
-                closest_sum = sum;
+                closest_sum = sum.abs();
                 first = nums[start];
                 second = nums[end];
             }
