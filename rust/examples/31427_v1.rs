@@ -1,12 +1,12 @@
 // 신촌 도로망 관리와 쿼리
 
 use std::cmp::Reverse;
-use std::collections::{BinaryHeap, HashMap};
+use std::collections::BinaryHeap;
 use std::error::Error;
 use std::fmt::Write;
 use std::io::{stdin, Read};
 
-type Weight = char;
+type Weight = usize;
 type Vertex = usize;
 type Edge = (Weight, Vertex);
 
@@ -24,18 +24,26 @@ fn main() -> Result<(), Box<dyn Error>> {
     for _ in 0..num_e {
         let start = input.next().unwrap().parse::<usize>()?;
         let end = input.next().unwrap().parse::<usize>()?;
-        let weight: Weight = input.next().unwrap().chars().next().unwrap();
+        let weight: usize = match input.next().unwrap().chars().next().unwrap() {
+            'A' => 0,
+            'B' => 1,
+            'C' => 2,
+            'D' => 3,
+            'E' => 4,
+            _ => unreachable!(),
+        };
         edges[start].push((weight, end));
         edges[end].push((weight, start));
     }
 
     for _ in 0..num_test {
-        let mut cost = HashMap::new();
-        cost.insert('A', input.next().unwrap().parse::<usize>()?);
-        cost.insert('B', input.next().unwrap().parse::<usize>()?);
-        cost.insert('C', input.next().unwrap().parse::<usize>()?);
-        cost.insert('D', input.next().unwrap().parse::<usize>()?);
-        cost.insert('E', input.next().unwrap().parse::<usize>()?);
+        let cost = [
+            input.next().unwrap().parse::<usize>()?,
+            input.next().unwrap().parse::<usize>()?,
+            input.next().unwrap().parse::<usize>()?,
+            input.next().unwrap().parse::<usize>()?,
+            input.next().unwrap().parse::<usize>()?,
+        ];
         let mut contained = vec![false; num_v + 1];
         let mut edges_pq: BinaryHeap<Reverse<(usize, usize)>> = BinaryHeap::new();
         let mut dist = 0;
@@ -49,7 +57,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             dist += curr_w;
             for &(next_w, next_v) in &edges[curr_v] {
                 if !contained[next_v] {
-                    edges_pq.push(Reverse((cost[&next_w], next_v)));
+                    edges_pq.push(Reverse((cost[next_w], next_v)));
                 }
             }
         }
