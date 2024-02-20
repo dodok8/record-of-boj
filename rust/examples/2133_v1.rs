@@ -24,12 +24,17 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut input = String::new();
     stdin().read_to_string(&mut input).unwrap();
     let mut input = input.split_ascii_whitespace().flat_map(str::parse::<usize>);
-    let n = input.next().unwrap() / 2;
-    let mut cache = vec![None; n + 1];
-    cache[0] = Some(1_usize);
-    cache[1] = Some(3);
+    let n = input.next().unwrap();
+    if n % 2 == 1 {
+        writeln!(output, "0").unwrap();
+    } else {
+        let n = n / 2;
+        let mut cache = vec![None; n + 1];
+        cache[0] = Some(1_usize);
+        cache[1] = Some(3);
 
-    writeln!(output, "{}", get_count(n, &mut cache)).unwrap();
+        writeln!(output, "{}", get_count(n, &mut cache)).unwrap();
+    }
     print!("{}", output);
     Ok(())
 }
