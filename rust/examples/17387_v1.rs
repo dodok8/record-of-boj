@@ -3,9 +3,9 @@
 use std::error::Error;
 use std::io::{stdin, Read};
 
-type Point = (i64, i64);
+type Point = (i128, i128);
 
-fn get_ccw(p1: &Point, p2: &Point, p3: &Point) -> i64 {
+fn get_ccw(p1: &Point, p2: &Point, p3: &Point) -> i128 {
     let (x1, y1) = p1;
     let (x2, y2) = p2;
     let (x3, y3) = p3;
@@ -15,7 +15,7 @@ fn get_ccw(p1: &Point, p2: &Point, p3: &Point) -> i64 {
 fn main() -> Result<(), Box<dyn Error>> {
     let mut input = String::new();
     stdin().read_to_string(&mut input).unwrap();
-    let mut input = input.split_ascii_whitespace().flat_map(str::parse::<i64>);
+    let mut input = input.split_ascii_whitespace().flat_map(str::parse::<i128>);
     let p1 = (input.next().unwrap(), input.next().unwrap());
     let p2 = (input.next().unwrap(), input.next().unwrap());
 
@@ -32,9 +32,10 @@ fn main() -> Result<(), Box<dyn Error>> {
         if ccw_12 == 0 && ccw_34 == 0 {
             if (p1.0 - p3.0) * (p1.0 - p4.0) < 0 || (p2.0 - p3.0) * (p2.0 - p4.0) < 0 {
                 crossed = true;
-            }
-            if (p1.1 - p3.1) * (p1.1 - p4.1) < 0 || (p2.1 - p3.1) * (p2.1 - p4.1) < 0 {
-                crossed = true;
+            } else {
+                if (p1.1 - p3.1) * (p1.1 - p4.1) < 0 || (p2.1 - p3.1) * (p2.1 - p4.1) < 0 {
+                    crossed = true;
+                }
             }
         } else {
             crossed = ccw_12 <= 0 && ccw_34 <= 0;
