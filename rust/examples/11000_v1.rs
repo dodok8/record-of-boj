@@ -23,7 +23,6 @@ fn main() -> Result<(), Box<dyn Error>> {
     previous_ends.push(Reverse(meetings[0].1));
     for meeting in meetings.iter().skip(1) {
         let (start, end) = meeting;
-        writeln!(output, "{:?}", previous_ends).unwrap();
         if start < &previous_ends.peek().unwrap().0 {
             previous_ends.push(Reverse(*end));
         } else {
