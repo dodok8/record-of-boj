@@ -23,8 +23,10 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let mut idx = 0;
     for point in points {
-        if lines[idx].0 <= point.0 && point.0 <= lines[idx].1 && point.1 >= lines[idx].1 {
-            lines[idx].1 = point.1;
+        if lines[idx].0 <= point.0 && point.0 <= lines[idx].1 {
+            if point.1 >= lines[idx].1 {
+                lines[idx].1 = point.1;
+            }
         } else {
             lines.push(point);
             idx += 1;
