@@ -18,7 +18,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     nums.sort_unstable();
 
     let mut start = 0_usize;
-    let mut end = (n - 1) as usize;
+    let mut end = 1_usize;
     let mut closest_diff = i64::MAX;
     loop {
         let diff = nums[end] - nums[start];
@@ -32,10 +32,13 @@ fn main() -> Result<(), Box<dyn Error>> {
                 break;
             }
             std::cmp::Ordering::Less => {
-                end -= 1;
+                end += 1;
             }
         }
         if start >= end {
+            break;
+        }
+        if end == (n - 1) as usize || start == (n - 1) as usize {
             break;
         }
     }
