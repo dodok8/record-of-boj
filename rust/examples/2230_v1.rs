@@ -19,12 +19,13 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let mut start = 0_usize;
     let mut end = 1_usize;
+    let n = n as usize;
     let mut closest_diff = i64::MAX;
-    loop {
+    while start < n && end < n {
         let diff = nums[end] - nums[start];
         match diff.cmp(&m) {
             std::cmp::Ordering::Greater => {
-                closest_diff = diff;
+                closest_diff = std::cmp::min(closest_diff, diff);
                 start += 1;
             }
             std::cmp::Ordering::Equal => {
@@ -34,9 +35,6 @@ fn main() -> Result<(), Box<dyn Error>> {
             std::cmp::Ordering::Less => {
                 end += 1;
             }
-        }
-        if end == n as usize || start == n as usize {
-            break;
         }
     }
     writeln!(output, "{}", closest_diff).unwrap();
