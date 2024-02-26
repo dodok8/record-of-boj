@@ -35,9 +35,6 @@ fn main() -> Result<(), Box<dyn Error>> {
                 end += 1;
             }
         }
-        if start >= end {
-            break;
-        }
         if end == n as usize || start == n as usize {
             break;
         }
