@@ -37,10 +37,13 @@ fn main() -> Result<(), Box<dyn Error>> {
                         result = 0;
                         break;
                     }
+                    if passed[idx + 1][jdx] || passed[idx + 1][jdx + 1] {
+                        result = 0;
+                        break;
+                    }
                     let next_1 = chocos[idx + 1][jdx].unwrap();
                     let next_2 = chocos[idx + 1][jdx + 1].unwrap();
                     if next_1 == 'R' && next_2 == 'R' {
-                        // println!("True: ({},{}) ({},{})", idx + 1, jdx, idx + 1, jdx + 1);
                         passed[idx + 1][jdx] = true;
                         passed[idx + 1][jdx + 1] = true;
                     } else {
@@ -53,6 +56,10 @@ fn main() -> Result<(), Box<dyn Error>> {
                         break;
                     }
                     if idx == n - 1 {
+                        result = 0;
+                        break;
+                    }
+                    if passed[idx][jdx + 1] || passed[idx + 1][jdx + 1] {
                         result = 0;
                         break;
                     }
