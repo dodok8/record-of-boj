@@ -31,6 +31,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 println!("! {}", person);
                 break;
             }
+            println!("? {}", person);
             let mut input = String::new();
             stdin().read_line(&mut input).unwrap();
             let third = input.trim().parse::<usize>()?;
