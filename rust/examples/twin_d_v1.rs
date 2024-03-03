@@ -49,6 +49,9 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut twin = vec![vec![0; m]; n];
     let mut is_mirror = false;
     loop {
+        if curr_num == max + 1 {
+            break;
+        }
         twin[idx][jdx] = curr_num;
         if is_mirror {
             match start_dir {
@@ -57,9 +60,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 _ => unreachable!(),
             }
         }
-        if curr_num == max + 1 {
-            break;
-        }
+
         match curr_dir {
             0 => {
                 if idx < n - 1 && twin[idx + 1][jdx] == 0 {
@@ -101,14 +102,12 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
         curr_num += 1;
     }
-
-    for row in twin {
+    for row in &twin {
         for col in row {
             write!(output, "{} ", col)?;
         }
         writeln!(output)?;
     }
-
     print!("{}", output);
     Ok(())
 }
