@@ -10,7 +10,12 @@ fn get_ccw(p1: &Point, p2: &Point, p3: &Point) -> i128 {
     let (x1, y1) = p1;
     let (x2, y2) = p2;
     let (x3, y3) = p3;
-    x1 * y2 + x2 * y3 + x3 * y1 - (x2 * y1 + x3 * y2 + x1 * y3)
+
+    match (x1 * y2 + x2 * y3 + x3 * y1 - (x2 * y1 + x3 * y2 + x1 * y3)).cmp(&0) {
+        cmp::Ordering::Less => -1,
+        cmp::Ordering::Equal => 0,
+        cmp::Ordering::Greater => 1,
+    }
 }
 
 fn judge_crossed(first: &(Point, Point), second: &(Point, Point)) -> bool {
