@@ -86,6 +86,11 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
     }
 
+    // Parent가 가장 작은 값이 되도록 전체 Parent를 한번 다시 찾아준다.
+    for idx in 0..n {
+        find_parent(&mut parents, idx);
+    }
+
     let mut counts = vec![0; n];
 
     for parent in parents {
