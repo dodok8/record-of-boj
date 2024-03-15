@@ -1,4 +1,3 @@
-// 월간 향우회 A번
 // 홀수 찾아 삼만리
 
 use std::collections::VecDeque;
