@@ -32,22 +32,30 @@ fn main() -> Result<(), Box<dyn Error>> {
         compressed_points.insert(point, idx);
     }
 
-    // 압축된 좌표를 바탕으로
-    let mut imos = vec![0; 2 * n + 1];
+    let mut compressed_ranges = Vec::new();
+
     for (first, second) in ranges {
         let &start = compressed_points.get(&first).unwrap();
         let &end = compressed_points.get(&second).unwrap();
-
-        imos[start] += 1;
-        imos[end + 1] -= 1;
+        compressed_ranges.push((start, end));
     }
 
-    for idx in 1..=2 * n {
-        imos[idx] += imos[idx - 1];
-    }
+    let mut counts = vec![0; compressed_ranges.len()];
 
-    // 자기 자신은 포함에서 제외해야 하므로 1을 뺀다.
-    writeln!(output, "{}", imos.iter().max().unwrap() - 1).unwrap();
+    for idx in 0..compressed_ranges.len() {
+        for jdx in 0..idx {
+            let r1 = compressed_ranges[idx];
+            let r2 = compressed_ranges[jdx];
+
+            if r1.0 <= r2.0 && r1.1 >= r2.1 {
+                counts[idx] += 1;
+            }
+            if r2.0 <= r1.0 && r2.1 >= r1.1 {
+                counts[jdx] += 1;
+            }
+        }
+    }
+    writeln!(output, "{}", counts.iter().max().unwrap()).unwrap();
     print!("{}", output);
     Ok(())
 }
