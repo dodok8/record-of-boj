@@ -39,7 +39,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         let &end = compressed_points.get(&second).unwrap();
 
         imos[start] += 1;
-        imos[end] -= 1;
+        imos[end + 1] -= 1;
     }
 
     for idx in 1..=2 * n {
