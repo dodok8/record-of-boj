@@ -21,8 +21,8 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
         parties.sort_by_key(|p| -p.0);
         parties.sort_by_key(|p| p.1);
-
-        let mut attend = [0; 16];
+        
+        let mut attend = [0; 100];
         let mut cnt = 0;
         for party in parties.iter() {
             for t in party.0..party.1 {
