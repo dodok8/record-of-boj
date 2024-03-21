@@ -21,7 +21,13 @@ fn main() -> Result<(), Box<dyn Error>> {
             counts.insert(k, 1);
         }
     }
-    writeln!(output, "{}", counts[&input.next().unwrap()]).unwrap();
+
+    let ans = if let Some(val) = counts.get(&input.next().unwrap()) {
+        val
+    } else {
+        &0_i32
+    };
+    writeln!(output, "{}", ans).unwrap();
     print!("{}", output);
     Ok(())
 }
