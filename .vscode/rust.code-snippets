@@ -22,7 +22,7 @@
   },
   "trait prime usize": {
     "scope": "rust",
-    "preifx": "prime",
+    "prefix": "prime",
     "body": [
       "trait Primes {",
       "    fn get_primes_le(num: usize) -> Vec<usize>;",
