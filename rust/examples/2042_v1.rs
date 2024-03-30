@@ -6,21 +6,21 @@ use std::fmt::Write;
 use std::io::{stdin, Read};
 use std::ops::{Add, AddAssign};
 
-struct SegmentTree<T: Copy + Add + std::fmt::Display> {
+struct SegmentTree<T: Copy + Add> {
     nodes: Vec<T>,
     n: usize,
 }
 
 impl<T> SegmentTree<T>
 where
-    T: Copy + Add<Output = T> + std::fmt::Display + AddAssign + Default,
+    T: Copy + Add<Output = T> + AddAssign + Default,
 {
     fn from(data: &Vec<T>) -> Self {
         let n = data.len();
         let h = n.next_power_of_two().trailing_zeros() as usize;
         let mut nodes: Vec<Option<T>> = vec![None; 2_usize.pow(h as u32 + 1)];
 
-        fn fill<T: Copy + Add<Output = T> + std::fmt::Display>(
+        fn fill<T: Copy + Add<Output = T>>(
             idx: usize,
             start: usize,
             end: usize,
@@ -52,7 +52,7 @@ where
     fn update(&mut self, idx: usize, new_value: T) {
         let end = self.n - 1;
         let start = 0_usize;
-        fn recursive_update<T: Copy + Add<Output = T> + std::fmt::Display>(
+        fn recursive_update<T: Copy + Add<Output = T>>(
             node_idx: usize,
             start: usize,
             end: usize,
@@ -77,7 +77,7 @@ where
         recursive_update(0, start, end, new_value, self, idx);
     }
     fn sum(&self, start: usize, end: usize) -> T {
-        fn recursive_sum<T: Copy + Add<Output = T> + std::fmt::Display + AddAssign + Default>(
+        fn recursive_sum<T: Copy + Add<Output = T> + AddAssign + Default>(
             node_idx: usize,
             node_start: usize,
             node_end: usize,
