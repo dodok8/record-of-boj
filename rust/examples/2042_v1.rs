@@ -18,31 +18,27 @@ where
     fn from(data: &Vec<T>) -> Self {
         let n = data.len();
         let h = n.next_power_of_two().trailing_zeros() as usize;
-        let mut nodes: Vec<Option<T>> = vec![None; 2_usize.pow(h as u32 + 1)];
+        let mut nodes: Vec<T> = vec![T::default(); 2_usize.pow(h as u32 + 1)];
 
         fn fill<T: Copy + Add<Output = T>>(
             idx: usize,
             start: usize,
             end: usize,
-            nodes: &mut Vec<Option<T>>,
+            nodes: &mut Vec<T>,
             data: &Vec<T>,
-        ) -> std::option::Option<T> {
+        ) -> T {
             if start == end {
-                nodes[idx] = Some(data[start]);
+                nodes[idx] = data[start];
                 return nodes[idx];
             }
 
             let mid = (start + end) / 2;
-            nodes[idx] = Some(
-                fill(idx * 2 + 1, start, mid, nodes, data).unwrap()
-                    + fill(idx * 2 + 2, mid + 1, end, nodes, data).unwrap(),
-            );
+            nodes[idx] = fill(idx * 2 + 1, start, mid, nodes, data)
+                + fill(idx * 2 + 2, mid + 1, end, nodes, data);
             nodes[idx]
         }
 
         fill(0, 0, data.len() - 1, &mut nodes, data);
-
-        let nodes: Vec<T> = nodes.into_iter().flatten().collect();
 
         SegmentTree {
             nodes,
