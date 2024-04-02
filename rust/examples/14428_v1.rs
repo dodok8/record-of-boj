@@ -140,7 +140,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             writeln!(
                 output,
                 "{}",
-                nums.iter().position(|&r| r == min_val).unwrap() + 1
+                start + nums.iter().skip(start).position(|&r| r == min_val).unwrap() + 1
             )
             .unwrap();
         }
