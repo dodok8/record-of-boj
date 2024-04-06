@@ -1,5 +1,6 @@
 // 수들의 합 7
 
+use std::cmp::{max, min};
 use std::error::Error;
 use std::fmt::Write;
 use std::io::{stdin, Read};
@@ -114,9 +115,9 @@ fn main() -> Result<(), Box<dyn Error>> {
             let val = input.next().unwrap();
             seg_tree.update(idx, val);
         } else {
-            let start = input.next().unwrap() - 1;
-            let end = input.next().unwrap() - 1;
-            writeln!(output, "{}", seg_tree.sum(start, end)).unwrap();
+            let a = input.next().unwrap() - 1;
+            let b = input.next().unwrap() - 1;
+            writeln!(output, "{}", seg_tree.sum(min(a, b), max(a, b))).unwrap();
         }
     }
     print!("{}", output);
