@@ -133,14 +133,12 @@ fn main() -> Result<(), Box<dyn Error>> {
             seg_tree.update(idx, val);
             nums[idx] = val;
         } else {
-            let start = 0;
-            let end = seg_tree.n - 1;
-            let min_val = seg_tree.min(start, end, usize::MAX);
+            let min_val = seg_tree.nodes[0];
 
             writeln!(
                 output,
                 "{}",
-                start + nums.iter().skip(start).position(|&r| r == min_val).unwrap() + 1
+                nums.iter().position(|&r| r == min_val).unwrap() + 1
             )
             .unwrap();
         }
