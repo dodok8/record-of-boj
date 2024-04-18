@@ -1,11 +1,10 @@
 // 1의 개수 세기
 
 use std::error::Error;
-use std::fmt::Write;
 use std::io::{stdin, Read};
 
 fn count_middle(x: usize, prefix_sum_one: &Vec<usize>) -> usize {
-    if (x as f32 + 1.).log2().ceil() < 1_f32 {
+    if ((x as f32 + 1.).log2().ceil() as usize) < 1 {
         return 0;
     }
     let log2 = (x as f32 + 1.).log2().ceil() as usize - 1;
@@ -17,7 +16,6 @@ fn count_middle(x: usize, prefix_sum_one: &Vec<usize>) -> usize {
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
-    let mut output = String::new();
     let mut input = String::new();
     stdin().read_to_string(&mut input).unwrap();
     let mut input = input.split_ascii_whitespace().flat_map(str::parse::<usize>);
@@ -25,14 +23,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let end = input.next().unwrap();
 
     let mut prefix_sum_one = vec![0_usize; 56];
-    prefix_sum_one[1] = 1;
-    prefix_sum_one[2] = 4;
-    // 중간값이 구해질 때 구하는 식으로
-    let start_log2 = (start as f32 + 1.).log2().ceil() as usize - 1;
-    let end_log2 = (end as f32 + 1.).log2().ceil() as usize - 1;
-    writeln!(output, "{} {}", start_log2, end_log2).unwrap();
-
-    for idx in 3..56 {
+    for idx in 1..56 {
         prefix_sum_one[idx] = 2 * prefix_sum_one[idx - 1] + 2_usize.pow((idx - 1) as u32);
     }
 
