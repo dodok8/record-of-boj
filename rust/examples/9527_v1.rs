@@ -4,10 +4,10 @@ use std::error::Error;
 use std::io::{stdin, Read};
 
 fn count_middle(x: usize, prefix_sum_one: &Vec<usize>) -> usize {
-    if ((x as f32 + 1.).log2().ceil() as usize) < 1 {
+   if x == 0 {
         return 0;
     }
-    let log2 = (x as f32 + 1.).log2().ceil() as usize - 1;
+    let log2 = x.ilog2() as usize;
     let pow = 2_usize.pow(log2 as u32);
     let mut result = prefix_sum_one[log2];
     result += x - pow + 1;
