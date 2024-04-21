@@ -17,13 +17,12 @@ fn main() -> Result<(), Box<dyn Error>> {
         distances.push(distances[idx - 1] + curr);
     }
 
-    let mut ans = usize::MIN;
+    let mut ans = 0;
     for idx in 1..(n / 2 + 1) {
+        if idx + 1 > n {
+            break;
+        }
         for jdx in idx + 1..n {
-            if jdx == n {
-                break;
-            }
-
             ans = max(
                 ans,
                 min(
