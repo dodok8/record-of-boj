@@ -65,9 +65,12 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let results = source.get_indexes(target);
     writeln!(output, "{}", results.len()).unwrap();
-    for num in results {
-        write!(output, "{} ", num + 1).unwrap();
+    if !results.is_empty() {
+        for num in results {
+            write!(output, "{} ", num + 1).unwrap();
+        }
+        writeln!(output).unwrap();
     }
-    println!("{}", output);
+    print!("{}", output);
     Ok(())
 }
