@@ -35,6 +35,9 @@ impl Kmp for String {
         let pi = get_partial_match(target);
         let target = target.as_bytes();
 
+        if source.len() < target.len() {
+            return results;
+        }
         let (mut begin, mut matched) = (0_usize, 0_usize);
         while begin <= source.len() - target.len() {
             if matched < target.len() && source[begin + matched] == target[matched] {
