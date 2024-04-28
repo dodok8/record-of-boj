@@ -21,18 +21,21 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let mut start = 0_usize;
     let mut end = 0_usize;
-    let mut curr = 0;
+    let mut curr = nums[0];
 
     while end < nums.len() {
         if curr >= s {
             if end - start < result {
-                result = end - start;
+                result = end - start + 1;
             }
             curr -= nums[start];
             start += 1;
         } else {
-            curr += nums[end];
             end += 1;
+            if end == n {
+                break;
+            }
+            curr += nums[end];
         }
     }
 
