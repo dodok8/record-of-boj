@@ -24,8 +24,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut curr = 0;
 
     while end < nums.len() {
-        if curr >= n {
-            if curr >= s && end - start < result {
+        if curr >= s {
+            if end - start < result {
                 result = end - start;
             }
             curr -= nums[start];
