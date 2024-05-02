@@ -3,7 +3,6 @@
 use std::error::Error;
 use std::fmt::Write;
 use std::io::{stdin, Read};
-
 fn find_parent(parents: &mut Vec<usize>, idx: usize) -> usize {
     if idx != parents[idx] {
         parents[idx] = find_parent(parents, parents[idx]);
@@ -30,19 +29,21 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let num_p = input.next().unwrap();
     let planes = input.take(num_p).collect::<Vec<usize>>();
-
-    for (idx, &plane) in planes.iter().enumerate() {
+    let mut result = 0;
+    for &plane in &planes {
         if find_parent(&mut parents, plane) == 0 {
-            writeln!(output, "{}", idx).unwrap();
             break;
         } else {
             union(
                 find_parent(&mut parents, plane) - 1,
                 find_parent(&mut parents, plane),
                 &mut parents,
-            )
+            );
+            result += 1;
         }
     }
+
+    writeln!(output, "{}", result).unwrap();
 
     print!("{}", output);
     Ok(())
