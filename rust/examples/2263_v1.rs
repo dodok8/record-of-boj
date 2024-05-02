@@ -19,15 +19,12 @@ fn update_preorder(
     } else if in_start > in_end || post_start > post_end {
         return;
     }
-    let curr_root = postorder[post_end];
-    let mut in_root = 0;
-    for idx in in_start..=in_end {
-        if inorder[idx] == curr_root {
-            in_root = idx;
-        }
-    }
-    preorder.push(curr_root);
-    println!("{}", curr_root);
+    let in_root = inorder[in_start..=in_end]
+        .iter()
+        .position(|&x| x == postorder[post_end])
+        .map(|i| i + in_start)
+        .unwrap();
+    preorder.push(postorder[post_end]);
     update_preorder(
         preorder,
         inorder,
@@ -54,10 +51,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     stdin().read_to_string(&mut input).unwrap();
     let mut input = input.split_ascii_whitespace().flat_map(str::parse::<usize>);
     let n = input.next().unwrap();
-
     let inorder: Vec<usize> = input.clone().take(n).collect();
-    let postorder: Vec<usize> = input.skip(n).take(n).collect();
-
+    let postorder: Vec<usize> = input.skip(n).collect();
     let mut preorder: Vec<usize> = Vec::new();
 
     update_preorder(&mut preorder, &inorder, &postorder, 0, n - 1, 0, n - 1);
