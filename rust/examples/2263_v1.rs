@@ -25,24 +25,32 @@ fn update_preorder(
         .map(|i| i + in_start)
         .unwrap();
     preorder.push(postorder[post_end]);
-    update_preorder(
-        preorder,
-        inorder,
-        postorder,
-        in_start,
-        in_root - 1,
-        post_start,
-        post_start + in_root - in_start - 1,
-    );
-    update_preorder(
-        preorder,
-        inorder,
-        postorder,
-        in_root + 1,
-        in_end,
-        post_start + in_root - in_start,
-        post_end - 1,
-    );
+
+    let left_len = in_root - in_start;
+    let right_len = in_end - in_root;
+
+    if left_len > 0 {
+        update_preorder(
+            preorder,
+            inorder,
+            postorder,
+            in_start,
+            in_root - 1,
+            post_start,
+            post_start + in_root - in_start - 1,
+        );
+    }
+    if right_len > 0 {
+        update_preorder(
+            preorder,
+            inorder,
+            postorder,
+            in_root + 1,
+            in_end,
+            post_start + in_root - in_start,
+            post_end - 1,
+        );
+    }
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
@@ -52,7 +60,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut input = input.split_ascii_whitespace().flat_map(str::parse::<usize>);
     let n = input.next().unwrap();
     let inorder: Vec<usize> = input.clone().take(n).collect();
-    let postorder: Vec<usize> = input.skip(n).collect();
+    let postorder: Vec<usize> = input.skip(n).take(n).collect();
     let mut preorder: Vec<usize> = Vec::new();
 
     update_preorder(&mut preorder, &inorder, &postorder, 0, n - 1, 0, n - 1);
