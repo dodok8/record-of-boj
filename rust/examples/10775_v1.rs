@@ -37,7 +37,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             break;
         } else {
             union(
-                find_parent(&mut parents, plane - 1),
+                find_parent(&mut parents, plane) - 1,
                 find_parent(&mut parents, plane),
                 &mut parents,
             )
