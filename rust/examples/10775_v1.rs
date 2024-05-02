@@ -33,7 +33,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     for (idx, &plane) in planes.iter().enumerate() {
         if find_parent(&mut parents, plane) == 0 {
-            writeln!(output, "{}", idx + 1).unwrap();
+            writeln!(output, "{}", idx).unwrap();
             break;
         } else {
             union(
