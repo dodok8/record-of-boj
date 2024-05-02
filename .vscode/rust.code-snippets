@@ -22,7 +22,7 @@
   },
   "trait prime usize": {
     "scope": "rust",
-    "preifx": "prime",
+    "prefix": "prime",
     "body": [
       "trait Primes {",
       "    fn get_primes_le(num: usize) -> Vec<usize>;",
@@ -102,5 +102,27 @@
       "}"
     ],
     "description": "O(n) optimized sieves"
-  }
+  },
+ "union_find": {
+  "scope": "rust",
+  "prefix": "union",
+  "body": [
+    "fn find_parent(parents: &mut Vec<usize>, idx: usize) -> usize {",
+    "    if idx != parents[idx] {",
+    "        parents[idx] = find_parent(parents, parents[idx]);",
+    "    }",
+    "    parents[idx]",
+    "}",
+    "fn union(x: usize, y: usize, parents: &mut Vec<usize>) {",
+    "    let x = find_parent(parents, x);",
+    "    let y = find_parent(parents, y);",
+    "    if x < y {",
+    "        parents[y] = x;",
+    "    } else {",
+    "        parents[x] = y;",
+    "    }",
+    "}",
+  ],
+  "description": "uniion find"
+ }
 }
