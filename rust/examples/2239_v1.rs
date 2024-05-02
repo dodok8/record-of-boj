@@ -43,12 +43,17 @@ fn fill_sudoku(idx: usize, sudoku: &mut Vec<Vec<usize>>) -> bool {
     if idx < 81 {
         let x = idx / 9;
         let y = idx % 9;
+
+        let is_printed = sudoku[x][y] != 0;
         for num in get_possible(x, y, sudoku) {
             sudoku[x][y] = num;
+
             if fill_sudoku(idx + 1, sudoku) {
                 return true;
             } else {
-                sudoku[x][y] = 0;
+                if !is_printed {
+                    sudoku[x][y] = 0;
+                }
                 continue;
             };
         }
