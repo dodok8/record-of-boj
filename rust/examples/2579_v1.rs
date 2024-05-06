@@ -25,7 +25,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut dp = vec![0_usize; n];
     match n {
         1 => writeln!(output, "{}", stairs[0]).unwrap(),
-        2 => writeln!(output, "{}", stairs[1]).unwrap(),
+        2 => writeln!(output, "{}", stairs[0] + stairs[1]).unwrap(),
         3 => writeln!(
             output,
             "{}",
