@@ -23,10 +23,23 @@ fn main() -> Result<(), Box<dyn Error>> {
     let n = input.next().unwrap();
     let stairs = input.take(n).collect::<Vec<usize>>();
     let mut dp = vec![0_usize; n];
-    dp[0] = stairs[0];
-    dp[1] = stairs[1] + stairs[0];
-    dp[2] = cmp::max(stairs[0] + stairs[2], stairs[1] + stairs[2]);
-    writeln!(output, "{}", get_dp(n - 1, &mut dp, &stairs)).unwrap();
+    match n {
+        1 => writeln!(output, "{}", stairs[0]).unwrap(),
+        2 => writeln!(output, "{}", stairs[1]).unwrap(),
+        3 => writeln!(
+            output,
+            "{}",
+            cmp::max(stairs[0] + stairs[2], stairs[1] + stairs[2])
+        )
+        .unwrap(),
+        _ => {
+            dp[0] = stairs[0];
+            dp[1] = stairs[1] + stairs[0];
+            dp[2] = cmp::max(stairs[0] + stairs[2], stairs[1] + stairs[2]);
+            writeln!(output, "{}", get_dp(n - 1, &mut dp, &stairs)).unwrap();
+        }
+    }
+
     print!("{}", output);
     Ok(())
 }
