@@ -17,7 +17,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     stdin().read_to_string(&mut input).unwrap();
     let mut input = input.split_ascii_whitespace().flat_map(str::parse::<usize>);
 
-    let mut dp = vec![0_usize; 100];
+    let mut dp = vec![0_usize; 101];
     dp[1] = 1;
     dp[2] = 1;
     dp[3] = 1;
