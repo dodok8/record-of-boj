@@ -8,8 +8,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut output = String::new();
     let mut input = String::new();
     stdin().read_to_string(&mut input).unwrap();
+    input = input.chars().filter(|c| !c.is_whitespace()).collect();
     let mut input = input.split('-');
-
     let get_sum = |c: &str| c.split('+').flat_map(str::parse::<i32>).sum::<i32>();
     let mut ans: i32 = get_sum(input.next().unwrap());
 
