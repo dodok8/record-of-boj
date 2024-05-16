@@ -28,13 +28,9 @@ fn main() -> Result<(), Box<dyn Error>> {
     stdin().read_to_string(&mut input).unwrap();
     let mut input = input.split_ascii_whitespace().flat_map(str::parse::<usize>);
     let n = input.next().unwrap();
-    let mut dp = vec![0_usize; n + 1];
+    let mut dp = vec![0_usize; 50_001];
     dp[1] = 1;
     dp[2] = 2;
-    dp[3] = 3;
-    dp[4] = 1;
-    dp[5] = 2;
-
     writeln!(output, "{}", get_dp(n, &mut dp)).unwrap();
     print!("{}", output);
     Ok(())
