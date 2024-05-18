@@ -62,15 +62,23 @@ fn main() -> Result<(), Box<dyn Error>> {
     }
     for _ in 0..input.next().unwrap().parse::<usize>().unwrap() {
         let n = input.next().unwrap().parse::<usize>().unwrap();
-        let mbtis = input
-            .by_ref()
-            .take(n)
-            .map(mbti_to_usize)
-            .collect::<Vec<usize>>();
-
         let mut result = usize::MAX;
-        for c in get_combinations(mbtis, 3) {
-            result = cmp::min(result, dp[c[0]][c[1]] + dp[c[1]][c[2]] + dp[c[2]][c[0]]);
+        if n > 32 {
+            result = 0;
+        } else {
+            let mbtis = input
+                .by_ref()
+                .take(n)
+                .map(mbti_to_usize)
+                .collect::<Vec<usize>>();
+
+            for c in get_combinations(mbtis, 3) {
+                let temp = dp[c[0]][c[1]] + dp[c[1]][c[2]] + dp[c[2]][c[0]];
+                result = cmp::min(result, temp);
+                if temp == 0 {
+                    break;
+                }
+            }
         }
         writeln!(output, "{}", result).unwrap();
     }
