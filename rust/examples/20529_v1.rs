@@ -64,6 +64,11 @@ fn main() -> Result<(), Box<dyn Error>> {
         let n = input.next().unwrap().parse::<usize>().unwrap();
         let mut result = usize::MAX;
         if n > 32 {
+            let _mbtis = input
+                .by_ref()
+                .take(n)
+                .map(mbti_to_usize)
+                .collect::<Vec<usize>>();
             result = 0;
         } else {
             let mbtis = input
