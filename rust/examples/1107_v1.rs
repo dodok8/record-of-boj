@@ -21,7 +21,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let mut min_count = usize::abs_diff(100, target);
 
-    for num in 0..600000_usize {
+    for num in 0..1000000_usize {
         let length = num.to_string().len();
         for (idx, digit) in num
             .to_string()
