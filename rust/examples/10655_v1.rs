@@ -18,24 +18,23 @@ fn main() -> Result<(), Box<dyn Error>> {
     for _ in 0..n {
         distances.push((input.next().unwrap(), input.next().unwrap()));
     }
-    let mut result = u32::MAX;
-
-    let mut dp = vec![vec![0; n]; n];
-    for skip in 1..(n - 1) {
-        let mut previous_idx = 0;
-        let mut curr_d = 0;
-        for idx in 1..n {
-            if idx == skip {
-                continue;
-            }
-
-            if dp[previous_idx][idx] == 0 {
-                dp[previous_idx][idx] = get_distance(distances[previous_idx], distances[idx]);
-            }
-            curr_d += dp[previous_idx][idx];
-            previous_idx = idx;
+    let sum = {
+        let mut sum = 0;
+        for idx in 0..(n - 1) {
+            sum += get_distance(distances[idx], distances[idx + 1]);
         }
-        if result > curr_d {
+        sum
+    };
+
+    let mut result = sum;
+
+    for idx in 1..(n - 1) {
+        let curr_d = sum
+            - (get_distance(distances[idx], distances[idx + 1])
+                + get_distance(distances[idx], distances[idx - 1]))
+            + get_distance(distances[idx - 1], distances[idx + 1]);
+
+        if curr_d < result {
             result = curr_d;
         }
     }
