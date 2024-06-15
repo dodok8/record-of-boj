@@ -19,15 +19,21 @@ fn main() -> Result<(), Box<dyn Error>> {
         distances.push((input.next().unwrap(), input.next().unwrap()));
     }
     let mut result = vec![u32::MAX; n];
+
+    let mut dp = vec![vec![0; n]; n];
     for skip in 1..(n - 1) {
-        let mut previous = distances[0];
+        let mut previous_idx = 0;
         let mut curr_d = 0;
         for idx in 1..n {
             if idx == skip {
                 continue;
             }
-            curr_d += get_distance(previous, distances[idx]);
-            previous = distances[idx];
+
+            if dp[previous_idx][idx] == 0 {
+                dp[previous_idx][idx] = get_distance(distances[previous_idx], distances[idx]);
+            }
+            curr_d += dp[previous_idx][idx];
+            previous_idx = idx;
         }
         result[skip] = curr_d;
     }
