@@ -18,7 +18,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     for _ in 0..n {
         distances.push((input.next().unwrap(), input.next().unwrap()));
     }
-    let mut result = vec![u32::MAX; n];
+    let mut result = u32::MAX;
 
     let mut dp = vec![vec![0; n]; n];
     for skip in 1..(n - 1) {
@@ -35,9 +35,11 @@ fn main() -> Result<(), Box<dyn Error>> {
             curr_d += dp[previous_idx][idx];
             previous_idx = idx;
         }
-        result[skip] = curr_d;
+        if result > curr_d {
+            result = curr_d;
+        }
     }
-    writeln!(output, "{}", result.iter().min().unwrap()).unwrap();
+    writeln!(output, "{}", result).unwrap();
     print!("{}", output);
     Ok(())
 }
