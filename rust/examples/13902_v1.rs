@@ -43,7 +43,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
     }
 
-    let mut dp = vec![0; num_f + 1];
+    let mut dp = vec![0; 10000 + woks[woks.len() - 1]];
     dp[0] = 0;
     for &wok in &woks {
         dp[wok] = 1;
