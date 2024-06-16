@@ -43,11 +43,8 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
     }
 
-    let mut dp = vec![0; 10000 + woks[woks.len() - 1]];
+    let mut dp = vec![0; 10001];
     dp[0] = 0;
-    for &wok in &woks {
-        dp[wok] = 1;
-    }
 
     let ans = get_dp(num_f as i64, &mut dp, &woks);
     if ans == usize::MAX {
