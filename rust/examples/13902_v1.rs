@@ -48,7 +48,13 @@ fn main() -> Result<(), Box<dyn Error>> {
     for &wok in &woks {
         dp[wok] = 1;
     }
-    writeln!(output, "{}", get_dp(num_f as i64, &mut dp, &woks)).unwrap();
+
+    let ans = get_dp(num_f as i64, &mut dp, &woks);
+    if ans == usize::MAX {
+        writeln!(output, "-1").unwrap();
+    } else {
+        writeln!(output, "{}", ans).unwrap();
+    }
     print!("{}", output);
     Ok(())
 }
