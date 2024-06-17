@@ -127,9 +127,9 @@ fn main() -> Result<(), Box<dyn Error>> {
 
         if let Ok(number) = command_to_number(&command_10) {
             if negative && number > 10000000000000000 {
-                writeln!(output, "{} INVALID VALUE", r)?;
+                writeln!(output, "INVALID VALUE")?;
             } else if number >= 10000000000000000 && !negative {
-                writeln!(output, "{} INVALID VALUE", r)?;
+                writeln!(output, "INVALID VALUE")?;
             } else {
                 writeln!(
                     output,
@@ -138,7 +138,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 )?;
             }
         } else {
-            writeln!(output, "{} INVALID VALUE", r)?;
+            writeln!(output, "INVALID VALUE")?;
         }
     }
     print!("{}", output);
