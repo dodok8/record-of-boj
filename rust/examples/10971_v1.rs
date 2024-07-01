@@ -15,12 +15,16 @@ fn dfs(
     start: usize,
 ) -> usize {
     if curr_d == n - 1 {
-        curr_w + graph[curr_v][start]
+        if graph[curr_v][start] != 0 {
+            curr_w + graph[curr_v][start]
+        } else {
+            usize::MAX
+        }
     } else {
         visited[curr_v] = true;
         let mut result = usize::MAX;
         for next_v in 0..n {
-            if !visited[next_v] {
+            if !visited[next_v] && graph[curr_v][next_v] != 0 {
                 result = min(
                     result,
                     dfs(
