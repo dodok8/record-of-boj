@@ -1,34 +1,43 @@
 // 외판원 순회 2
 
+use std::cmp::min;
 use std::error::Error;
 use std::fmt::Write;
 use std::io::{stdin, Read};
 
-fn get_permutations(vec: Vec<usize>, n: usize) -> Vec<Vec<usize>> {
-    fn permutations_helper(
-        vec: &[usize],
-        n: usize,
-        prefix: &mut Vec<usize>,
-        result: &mut Vec<Vec<usize>>,
-    ) {
-        if n == 0 {
-            result.push(prefix.clone());
-            return;
+fn dfs(
+    curr_v: usize,
+    graph: &Vec<Vec<usize>>,
+    visited: &mut Vec<bool>,
+    curr_d: usize,
+    curr_w: usize,
+    n: usize,
+    start: usize,
+) -> usize {
+    if curr_d == n - 1 {
+        curr_w + graph[curr_v][start]
+    } else {
+        visited[curr_v] = true;
+        let mut result = usize::MAX;
+        for next_v in 0..n {
+            if !visited[next_v] {
+                result = min(
+                    result,
+                    dfs(
+                        next_v,
+                        graph,
+                        visited,
+                        curr_d + 1,
+                        curr_w + graph[curr_v][next_v],
+                        n,
+                        start,
+                    ),
+                );
+                visited[next_v] = false;
+            }
         }
-
-        for (i, &item) in vec.iter().enumerate() {
-            let mut remaining = vec.to_vec();
-            remaining.remove(i);
-            prefix.push(item);
-            permutations_helper(&remaining, n - 1, prefix, result);
-            prefix.pop();
-        }
+        result
     }
-
-    let mut result = Vec::new();
-    let mut prefix = Vec::new();
-    permutations_helper(&vec, n, &mut prefix, &mut result);
-    result
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
@@ -43,22 +52,10 @@ fn main() -> Result<(), Box<dyn Error>> {
     for _ in 0..n {
         weights.push(input.by_ref().take(n).collect::<Vec<usize>>());
     }
-
-    let permutations = get_permutations((0..n).collect::<Vec<usize>>(), n);
-
     let mut min_w = usize::MAX;
-    for permutation in permutations {
-        let mut curr_w = 0;
-        for start_idx in 0..n {
-            let end_idx = (start_idx + 1) % n;
-            curr_w += weights[permutation[start_idx]][permutation[end_idx]];
-            if curr_w > min_w {
-                break;
-            }
-        }
-        if curr_w < min_w {
-            min_w = curr_w;
-        }
+    for start in 0..n {
+        let mut visited = vec![false; n];
+        min_w = min(dfs(start, &weights, &mut visited, 0, 0, n, start), min_w);
     }
     writeln!(output, "{}", min_w).unwrap();
     print!("{}", output);
