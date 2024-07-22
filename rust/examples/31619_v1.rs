@@ -146,23 +146,22 @@ fn main() -> Result<(), Box<dyn Error>> {
         data.push(cost);
     }
 
-    let mut seg_tree: StaticArq<AssignDiscount> = StaticArq::new(&data);
+    let mut trees: Vec<StaticArq<AssignDiscount>> = Vec::new();
+
+    for day in 0..q {
+        let mut new_data = data.clone();
+        for &idx in &categories[day] {
+            new_data[idx] = data[idx] / 2;
+        }
+        trees.push(StaticArq::new(&new_data))
+    }
+
     for _ in 0..q {
         let day = input.next().unwrap() - 1;
-        for &idx in &categories[day] {
-            let cost = data[idx];
-            seg_tree.update(idx, cost / 2);
-        }
-
         let start = input.next().unwrap() - 1;
         let end = input.next().unwrap() - 1;
 
-        writeln!(output, "{}", seg_tree.query(start, end)).unwrap();
-
-        for &idx in &categories[day] {
-            let cost = data[idx];
-            seg_tree.update(idx, cost);
-        }
+        writeln!(output, "{}", trees[day].query(start, end)).unwrap();
     }
     print!("{}", output);
     Ok(())
