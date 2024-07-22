@@ -146,23 +146,38 @@ fn main() -> Result<(), Box<dyn Error>> {
         data.push(cost);
     }
 
-    let mut trees: Vec<StaticArq<AssignDiscount>> = Vec::new();
-
-    for day in 0..q {
-        let mut new_data = data.clone();
-        for &idx in &categories[day] {
-            new_data[idx] = data[idx] / 2;
-        }
-        trees.push(StaticArq::new(&new_data))
-    }
-
-    for _ in 0..q {
+    let mut seg_tree: StaticArq<AssignDiscount> = StaticArq::new(&data);
+    let mut orders = vec![Vec::new(); m];
+    for o_idx in 0..q {
         let day = input.next().unwrap() - 1;
         let start = input.next().unwrap() - 1;
         let end = input.next().unwrap() - 1;
-
-        writeln!(output, "{}", trees[day].query(start, end)).unwrap();
+        orders[day].push((start, end, o_idx));
     }
+
+    let mut results = Vec::new();
+    for (day, &ref order_list) in orders.iter().enumerate() {
+        for &idx in &categories[day] {
+            let cost = data[idx];
+            seg_tree.update(idx, cost / 2);
+        }
+
+        for &(start, end, o_idx) in order_list {
+            results.push((o_idx, seg_tree.query(start, end)));
+        }
+
+        for &idx in &categories[day] {
+            let cost = data[idx];
+            seg_tree.update(idx, cost);
+        }
+    }
+
+    results.sort_unstable_by_key(|x| x.0);
+
+    for result in results {
+        writeln!(output, "{}", result.1).unwrap();
+    }
+
     print!("{}", output);
     Ok(())
 }
