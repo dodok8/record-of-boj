@@ -1,8 +1,18 @@
 // 암호 해독기
 
+use std::collections::HashMap;
 use std::error::Error;
 use std::fmt::Write;
 use std::io::{stdin, Read};
+
+fn num_to_char(num: usize) -> char {
+    match num {
+        0 => ' ',
+        1..=26 => (b'A' + (num - 1) as u8) as char,
+        27..=52 => (b'a' + (num - 27) as u8) as char,
+        _ => todo!(),
+    }
+}
 
 fn main() -> Result<(), Box<dyn Error>> {
     let mut output = String::new();
@@ -17,34 +27,31 @@ fn main() -> Result<(), Box<dyn Error>> {
         .flat_map(str::parse::<usize>)
         .collect::<Vec<usize>>();
     let letters = input.next().unwrap().chars();
-
-    let mut count_space = 0;
-    let mut count_lower = 0;
-    let mut count_upper = 0;
-
+    let mut letter_set: HashMap<char, i64> = HashMap::new();
     for code in codes {
-        match code {
-            0 => count_space += 1,
-            1..=26 => count_upper += 1,
-            27..=52 => count_lower += 1,
-            _ => panic!(),
-        }
+        let letter = num_to_char(code);
+        let curr_cnt = letter_set.get(&letter).unwrap_or_else(|| &0);
+        letter_set.insert(letter, curr_cnt + 1);
     }
 
+    let mut finish = true;
     for letter in letters {
-        if letter == ' ' {
-            count_space -= 1;
-        } else if letter.is_ascii_lowercase() {
-            count_lower -= 1;
+        let curr_cnt = letter_set.get_mut(&letter);
+        if let Some(&mut mut val) = curr_cnt {
+            val -= 1;
+            if val < 0 {
+                finish = false;
+                break;
+            }
         } else {
-            count_upper -= 1;
+            finish = false;
+            break;
         }
     }
-
-    if count_space == 0 && count_lower == 0 && count_upper == 0 {
-        writeln!(output, "y").unwrap();
+    if finish {
+        writeln!(output, "y")?;
     } else {
-        writeln!(output, "n").unwrap();
+        writeln!(output, "n")?;
     }
     print!("{}", output);
     Ok(())
