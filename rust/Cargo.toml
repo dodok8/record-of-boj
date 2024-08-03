@@ -7,6 +7,8 @@ edition = "2018"
 
 [dependencies]
 
+[env]
+
 [[bin]]
 name = "main"
 path = "bin/main.rs"
