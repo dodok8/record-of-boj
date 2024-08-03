@@ -30,7 +30,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut letter_set: HashMap<char, i64> = HashMap::new();
     for code in codes {
         let letter = num_to_char(code);
-        let curr_cnt = letter_set.get(&letter).unwrap_or_else(|| &0);
+        let curr_cnt = letter_set.get(&letter).unwrap_or(&0);
         letter_set.insert(letter, curr_cnt + 1);
     }
 
