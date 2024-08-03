@@ -36,10 +36,10 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let mut finish = true;
     for letter in letters {
-        let curr_cnt = letter_set.get_mut(&letter);
-        if let Some(&mut mut val) = curr_cnt {
-            val -= 1;
-            if val < 0 {
+        if let Some(val) = letter_set.get_mut(&letter) {
+            if *val > 0 {
+                *val -= 1;
+            } else {
                 finish = false;
                 break;
             }
@@ -48,6 +48,11 @@ fn main() -> Result<(), Box<dyn Error>> {
             break;
         }
     }
+
+    if letter_set.values().any(|&val| val != 0) {
+        finish = false;
+    }
+
     if finish {
         writeln!(output, "y")?;
     } else {
