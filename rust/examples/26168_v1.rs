@@ -12,15 +12,16 @@ fn main() -> Result<(), Box<dyn Error>> {
     let n = input.next().unwrap();
     let m = input.next().unwrap();
 
-    let nums = input.by_ref().take(n).collect::<Vec<usize>>();
+    let mut nums = input.by_ref().take(n).collect::<Vec<usize>>();
 
-    let op_1 = |x: usize| nums.iter().filter(|&&num| num >= x).count();
-    let op_2 = |x: usize| nums.iter().filter(|&&num| num > x).count();
+    nums.sort_unstable();
+
+    let op_1 = |x: usize| nums.len() - nums.partition_point(|&num| num < x);
+    let op_2 = |x: usize| nums.len() - nums.partition_point(|&num| num <= x);
     let op_3 = |x: usize, y: usize| {
-        nums.iter()
-            .filter(|&&num| num >= x)
-            .filter(|&&num| num <= y)
-            .count()
+        let start = nums.partition_point(|&num| num < x);
+        let end = nums.partition_point(|&num| num <= y);
+        end - start
     };
 
     for _ in 0..m {
