@@ -22,19 +22,21 @@ fn main() -> Result<(), Box<dyn Error>> {
         if k >= num_rev {
             k -= n - 1 - idx;
             nums[idx] = upper_bound;
-            upper_bound -= 1;
+            upper_bound = upper_bound.saturating_sub(1);
         } else {
             nums[idx] = lower_bound;
             lower_bound += 1; // 이 부분 때문에 정상 종료 되었다면, lower_bound가 upper_bound 보다 1이 더 크다. 만약 그렇지 않다면, 아직 다 놓지 못한 숫자가 있다는 뜻이다.
         }
     }
 
-    if k != 0 || upper_bound >= lower_bound {
+    if k != 0 {
         write!(output, "-1")?;
+    } else {
+        for num in nums {
+            write!(output, "{} ", num + 1)?;
+        }
     }
-    for num in nums {
-        write!(output, "{} ", num + 1)?;
-    }
+
     println!("{}", output);
     Ok(())
 }
