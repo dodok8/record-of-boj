@@ -72,6 +72,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let num_q = input.next().unwrap() as usize;
 
     let mut nums = input.by_ref().take(n).collect::<Vec<i64>>();
+    nums.sort_unstable();
     let mut temp = nums.clone();
 
     for _ in 0..num_q {
