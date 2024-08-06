@@ -24,9 +24,9 @@ fn get_floyd_warshall(edges: &Vec<Vec<Edge>>) -> Result<Vec<Vec<i32>>, MinusCycl
     // 0번째는 구현 편의를 위해 넣은 것이므로 제외한다.
     let mut weights: Vec<Vec<i32>> = vec![vec![i32::MAX; num_v + 1]; num_v + 1];
 
-    for (idx, weight) in weights.iter_mut().enumerate() {
-        weight[idx] = 0;
-    }
+    // for (idx, weight) in weights.iter_mut().enumerate() {
+    //     weight[idx] = 0;
+    // }
 
     for start_v in 1..num_v + 1 {
         for (weight, adj_v) in &edges[start_v] {
@@ -63,18 +63,23 @@ fn main() -> Result<(), Box<dyn Error>> {
     for start in 1..num_v {
         let num_e = input.next().unwrap();
         for _ in 0..num_e {
-            edges[start].push((-1, input.next().unwrap()));
+            edges[start].push((1, input.next().unwrap()));
         }
     }
 
     let smallest_weights = get_floyd_warshall(&edges)?;
+    // println!("{:?}", smallest_weights);
     let mut cycle = false;
 
     for idx in 2..num_v {
+        // println!(
+        //     "{} {} {}",
+        //     smallest_weights[1][idx], smallest_weights[idx][num_v], smallest_weights[1][num_v]
+        // );
         if smallest_weights[1][num_v] != i32::MAX
             && smallest_weights[1][idx] != i32::MAX
             && smallest_weights[idx][num_v] != i32::MAX
-            && smallest_weights[idx][idx] < 0
+            && smallest_weights[idx][idx] != i32::MAX
         {
             cycle = true;
             break;
