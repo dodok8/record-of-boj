@@ -7,27 +7,32 @@ use std::io::{stdin, Read};
 
 fn query(nums: &[i64], start: usize, end: usize, delta: i64, n: usize) -> Vec<i64> {
     let mut result: Vec<i64> = Vec::new();
-    let mut deq: VecDeque<i64> = VecDeque::new();
+    let mut d_deq: VecDeque<i64> = VecDeque::new();
 
     let start = start - 1;
     let end = end - 1;
 
-    deq.extend(nums[start..=end].iter().map(|x| x + delta));
-    let mut idx = 0;
-    while idx < n {
+    d_deq.extend(nums[start..=end].iter().map(|x| x + delta));
+    let mut o_deq: VecDeque<i64> = VecDeque::new();
+    for idx in 0..n {
         if start <= idx && idx <= end {
-            idx += 1; // 무한 루프 방지
             continue;
         }
-        if deq.is_empty() || *deq.front().unwrap() > nums[idx] {
-            result.push(nums[idx]);
-            idx += 1;
+        o_deq.push_back(nums[idx]);
+    }
+
+    while !d_deq.is_empty() && !o_deq.is_empty() {
+        let d = d_deq.front().unwrap();
+        let o = o_deq.front().unwrap();
+        if d > o {
+            result.push(o_deq.pop_front().unwrap());
         } else {
-            result.push(deq.pop_front().unwrap());
+            result.push(d_deq.pop_front().unwrap());
         }
     }
 
-    result.extend(deq);
+    result.extend(d_deq);
+    result.extend(o_deq);
     result
 }
 
@@ -49,10 +54,10 @@ fn main() -> Result<(), Box<dyn Error>> {
             input.next().unwrap(),
             n,
         );
-    }
-
-    for num in nums {
-        write!(output, "{} ", num)?;
+        for num in nums.iter() {
+            write!(output, "{} ", num)?;
+        }
+        writeln!(output)?;
     }
 
     println!("{}", output);
