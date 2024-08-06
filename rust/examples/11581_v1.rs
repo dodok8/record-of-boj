@@ -24,10 +24,6 @@ fn get_floyd_warshall(edges: &Vec<Vec<Edge>>) -> Result<Vec<Vec<i32>>, MinusCycl
     // 0번째는 구현 편의를 위해 넣은 것이므로 제외한다.
     let mut weights: Vec<Vec<i32>> = vec![vec![i32::MAX; num_v + 1]; num_v + 1];
 
-    // for (idx, weight) in weights.iter_mut().enumerate() {
-    //     weight[idx] = 0;
-    // }
-
     for start_v in 1..num_v + 1 {
         for (weight, adj_v) in &edges[start_v] {
             if *weight < weights[start_v][*adj_v as usize] {
@@ -36,22 +32,34 @@ fn get_floyd_warshall(edges: &Vec<Vec<Edge>>) -> Result<Vec<Vec<i32>>, MinusCycl
         }
     }
 
-    // start_v와 end_v가 같을 때, 그 값이 0 이하면 음수 사이클
     for mid_v in 1..num_v + 1 {
         for end_v in 1..num_v + 1 {
             for start_v in 1..num_v + 1 {
-                if weights[start_v][mid_v] == i32::MAX || weights[mid_v][end_v] == i32::MAX {
-                    continue;
-                }
                 weights[start_v][end_v] = cmp::min(
                     weights[start_v][end_v],
-                    weights[start_v][mid_v] + weights[mid_v][end_v],
+                    weights[start_v][mid_v].saturating_add(weights[mid_v][end_v]),
                 );
             }
         }
     }
     Ok(weights)
 }
+
+fn print_smallest_weights(smallest_weights: &Vec<Vec<i32>>) {
+    let num_v = smallest_weights.len();
+
+    for i in 1..num_v {
+        for j in 1..num_v {
+            if smallest_weights[i][j] == i32::MAX {
+                print!("{:2} ", -1);
+            } else {
+                print!("{:2} ", smallest_weights[i][j]);
+            }
+        }
+        println!();
+    }
+}
+
 fn main() -> Result<(), Box<dyn Error>> {
     let mut output = String::new();
     let mut input = String::new();
@@ -68,18 +76,15 @@ fn main() -> Result<(), Box<dyn Error>> {
     }
 
     let smallest_weights = get_floyd_warshall(&edges)?;
-    // println!("{:?}", smallest_weights);
+    // print_smallest_weights(&smallest_weights);
     let mut cycle = false;
 
     for idx in 2..num_v {
-        // println!(
-        //     "{} {} {}",
-        //     smallest_weights[1][idx], smallest_weights[idx][num_v], smallest_weights[1][num_v]
-        // );
-        if smallest_weights[1][num_v] != i32::MAX
-            && smallest_weights[1][idx] != i32::MAX
+        if smallest_weights[1][idx] != i32::MAX
             && smallest_weights[idx][num_v] != i32::MAX
             && smallest_weights[idx][idx] != i32::MAX
+            && smallest_weights[num_v][idx] == i32::MAX
+            && smallest_weights[1][num_v] != i32::MAX
         {
             cycle = true;
             break;
