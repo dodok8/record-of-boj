@@ -19,7 +19,7 @@ fn query(nums: &[i64], start: usize, end: usize, delta: i64, n: usize) -> Vec<i6
             idx += 1; // 무한 루프 방지
             continue;
         }
-        if *deq.front().unwrap() > nums[idx] {
+        if deq.is_empty() || *deq.front().unwrap() > nums[idx] {
             result.push(nums[idx]);
             idx += 1;
         } else {
