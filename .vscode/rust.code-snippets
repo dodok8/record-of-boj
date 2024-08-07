@@ -13,7 +13,7 @@
       "    stdin().read_to_string(&mut input).unwrap();",
       "    let mut input = input",
       "        .split_ascii_whitespace().flat_map(str::parse::<i32>);",
-      "    writeln!(output, \"Hello world\").unwrap();",
+      "    writeln!(output, \"Hello world\")?;",
       "    print!(\"{}\", output);",
       "    Ok(())",
       "}"
