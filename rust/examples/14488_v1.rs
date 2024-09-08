@@ -12,19 +12,23 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut input = input.split_ascii_whitespace().flat_map(str::parse::<f64>);
 
     let n = input.next().unwrap() as usize;
-    let t = input.next().unwrap();
+    let t = (input.next().unwrap() * 10000.0) as i64;
 
-    let dists: Vec<f64> = input.by_ref().take(n).collect();
-    let vels: Vec<f64> = input.take(n).collect();
+    let dists: Vec<i64> = input
+        .by_ref()
+        .take(n)
+        .map(|n| (n * 10000.0) as i64)
+        .collect();
+    let vels: Vec<i64> = input.take(n).map(|n| (n * 10000.0) as i64).collect();
 
     let ranges = dists
         .iter()
         .zip(vels)
         .map(|(&x, v)| (x - v * t, x + v * t))
-        .collect::<Vec<(f64, f64)>>();
+        .collect::<Vec<(i64, i64)>>();
 
-    let mut start = f64::MIN;
-    let mut end = f64::MAX;
+    let mut start = i64::MIN;
+    let mut end = i64::MAX;
 
     for &range in ranges.iter() {
         start = start.max(range.0);
