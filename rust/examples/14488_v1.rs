@@ -12,27 +12,26 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut input = input.split_ascii_whitespace().flat_map(str::parse::<f64>);
 
     let n = input.next().unwrap() as usize;
-    let t = (input.next().unwrap() * 10000.0) as i64;
+    let t = input.next().unwrap();
 
-    let dists: Vec<i64> = input
-        .by_ref()
-        .take(n)
-        .map(|n| (n * 10000.0) as i64)
-        .collect();
-    let vels: Vec<i64> = input.take(n).map(|n| (n * 10000.0) as i64).collect();
+    let dists: Vec<f64> = input.by_ref().take(n).collect();
+    let vels: Vec<f64> = input.take(n).collect();
 
     let ranges = dists
         .iter()
         .zip(vels)
         .map(|(&x, v)| (x - v * t, x + v * t))
-        .collect::<Vec<(i64, i64)>>();
+        .collect::<Vec<(f64, f64)>>();
 
-    let mut start = i64::MIN;
-    let mut end = i64::MAX;
+    let mut start = f64::MIN;
+    let mut end = f64::MAX;
 
     for &range in ranges.iter() {
-        start = start.max(range.0);
-        end = end.min(range.1);
+        let rounded_start = (range.0 * 10_000.0).round() / 10_000.0;
+        let rounded_end = (range.1 * 10_000.0).round() / 10_000.0;
+
+        start = start.max(rounded_start);
+        end = end.min(rounded_end);
     }
 
     if start <= end {
