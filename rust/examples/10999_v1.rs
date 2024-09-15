@@ -1,4 +1,4 @@
-// 구간 합 구하기 2
+// Incorrect code
 
 type T = i64;
 struct Arq {
@@ -38,8 +38,8 @@ impl Arq {
             self.val[idx] = Self::combine(self.val[idx << 1], self.val[idx << 1 | 1]);
             if self.lazy[idx] != T::default() {
                 self.val[idx] += len as T * self.lazy[idx];
-                len <<= 1;
             }
+            len <<= 1;
         }
     }
 
@@ -50,7 +50,7 @@ impl Arq {
             if self.lazy[ptr] != T::default() {
                 self.apply(ptr << 1, len, self.lazy[ptr]);
                 self.apply(ptr << 1 | 1, len, self.lazy[ptr]);
-                self.lazy[ptr] = T::default();
+                self.lazy[ptr] = 0;
             }
             len >>= 1;
         }
@@ -102,7 +102,7 @@ impl Arq {
             }
             if p_end & 1 == 1 {
                 p_end -= 1;
-                result = Self::combine(result, self.val[p_end]);
+                result = Self::combine(self.val[p_end], result);
             }
             p_start >>= 1;
             p_end >>= 1;
@@ -130,11 +130,11 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut tree = Arq::new(n, data);
 
     for _ in 0..(m + k) {
-        if input.next().unwrap() == 1 {
+        if input.by_ref().next().unwrap() == 1 {
             tree.modify(
-                input.next().unwrap() as usize - 1,
-                input.next().unwrap() as usize,
-                input.next().unwrap(),
+                input.by_ref().next().unwrap() as usize - 1,
+                input.by_ref().next().unwrap() as usize,
+                input.by_ref().next().unwrap(),
             );
         } else {
             writeln!(
