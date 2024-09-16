@@ -21,16 +21,13 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
     }
 
-    fn query(diff: &Vec<usize>, idx: usize) -> usize {
-        let mut result = 0;
+    fn query(data: &mut Vec<usize>, diff: &Vec<usize>, idx: usize) -> usize {
+        let mut result = data[idx];
         for jdx in 0..=idx {
             result ^= diff[jdx];
         }
+        data[idx] = result;
         result
-    }
-
-    for idx in 0..n {
-        update(&mut diff, idx, idx, data[idx]);
     }
     for _ in 0..m {
         let t = input.next().unwrap();
@@ -41,7 +38,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             update(&mut diff, a, b, c);
         } else {
             let a = input.next().unwrap();
-            let ans = query(&diff, a);
+            let ans = query(&mut data, &diff, a);
             writeln!(output, "{}", ans)?;
         }
     }
