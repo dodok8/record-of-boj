@@ -1,6 +1,47 @@
 // 구간 합 구하기 2
+
+use std::error::Error;
+use std::fmt::{Debug, Display, Write};
+use std::io::{stdin, Read};
+use std::mem::size_of_val;
+
+fn main() -> Result<(), Box<dyn Error>> {
+    let mut output = String::new();
+    let mut input = String::new();
+    stdin().read_to_string(&mut input).unwrap();
+    let mut input = input.split_ascii_whitespace().flat_map(str::parse::<i64>);
+
+    let n = input.next().unwrap() as usize;
+    let m = input.next().unwrap() as usize;
+    let k = input.next().unwrap() as usize;
+
+    let data = input.by_ref().take(n);
+    let mut tree: LazySeg<Sum> = LazySeg::new(n, data);
+
+    for _ in 0..(m + k) {
+        if input.next().unwrap() == 1 {
+            tree.modify(
+                input.next().unwrap() as usize - 1,
+                input.next().unwrap() as usize,
+                input.next().unwrap(),
+            );
+        } else {
+            writeln!(
+                output,
+                "{}",
+                tree.query(
+                    input.next().unwrap() as usize - 1,
+                    input.next().unwrap() as usize
+                )
+            )?;
+        }
+    }
+    print!("{}", output);
+    Ok(())
+}
+
 trait Spec {
-    type S: Clone + Display + Debug + Default + PartialEq;
+    type S: Clone + Display + Debug + PartialEq;
 
     fn op(a: &Self::S, b: &Self::S) -> Self::S;
     fn identity() -> Self::S;
@@ -41,7 +82,7 @@ impl<T: Spec> LazySeg<T> {
         let mut val = vec![T::default(); n];
         val.extend(data);
         let lazy = vec![T::default(); n];
-        let h = 64 - n.leading_zeros();
+        let h = size_of_val(&val[0]) as u32 * 8u32 - n.leading_zeros();
         for i in (1..n).rev() {
             val[i] = T::combine(&val[i << 1], &val[i << 1 | 1]);
         }
@@ -139,43 +180,4 @@ impl<T: Spec> LazySeg<T> {
 
         result
     }
-}
-
-use std::error::Error;
-use std::fmt::{Debug, Display, Write};
-use std::io::{stdin, Read};
-
-fn main() -> Result<(), Box<dyn Error>> {
-    let mut output = String::new();
-    let mut input = String::new();
-    stdin().read_to_string(&mut input).unwrap();
-    let mut input = input.split_ascii_whitespace().flat_map(str::parse::<i64>);
-
-    let n = input.next().unwrap() as usize;
-    let m = input.next().unwrap() as usize;
-    let k = input.next().unwrap() as usize;
-
-    let data = input.by_ref().take(n);
-    let mut tree: LazySeg<Sum> = LazySeg::new(n, data);
-
-    for _ in 0..(m + k) {
-        if input.next().unwrap() == 1 {
-            tree.modify(
-                input.next().unwrap() as usize - 1,
-                input.next().unwrap() as usize,
-                input.next().unwrap(),
-            );
-        } else {
-            writeln!(
-                output,
-                "{}",
-                tree.query(
-                    input.next().unwrap() as usize - 1,
-                    input.next().unwrap() as usize
-                )
-            )?;
-        }
-    }
-    print!("{}", output);
-    Ok(())
 }
