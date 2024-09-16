@@ -1,5 +1,5 @@
 // 구간 합 구하기 2
-trait ArqSpec {
+trait Spec {
     type S: Clone + Display + Debug + Default + PartialEq;
 
     fn op(a: &Self::S, b: &Self::S) -> Self::S;
@@ -8,9 +8,9 @@ trait ArqSpec {
     fn default() -> Self::S;
 }
 
-enum AssignSum {}
+enum Sum {}
 
-impl ArqSpec for AssignSum {
+impl Spec for Sum {
     type S = i64;
     fn op(&a: &Self::S, &b: &Self::S) -> Self::S {
         a + b
@@ -29,14 +29,14 @@ impl ArqSpec for AssignSum {
     }
 }
 
-struct StaticArq<T: ArqSpec> {
+struct LazySeg<T: Spec> {
     val: Vec<T::S>,
     lazy: Vec<T::S>,
     n: usize,
     h: u32,
 }
 
-impl<T: ArqSpec> StaticArq<T> {
+impl<T: Spec> LazySeg<T> {
     fn new(n: usize, data: impl IntoIterator<Item = T::S>) -> Self {
         let mut val = vec![T::default(); n];
         val.extend(data);
@@ -66,7 +66,6 @@ impl<T: ArqSpec> StaticArq<T> {
                 for _ in 0..len {
                     self.val[idx] = T::op(&self.val[idx], &self.lazy[idx]);
                 }
-
             }
             len <<= 1;
         }
@@ -157,7 +156,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let k = input.next().unwrap() as usize;
 
     let data = input.by_ref().take(n);
-    let mut tree: StaticArq<AssignSum> = StaticArq::new(n, data);
+    let mut tree: LazySeg<Sum> = LazySeg::new(n, data);
 
     for _ in 0..(m + k) {
         if input.next().unwrap() == 1 {
