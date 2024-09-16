@@ -1,9 +1,6 @@
-// XOR
-
 use std::error::Error;
-use std::fmt::{Debug, Display, Write};
+use std::fmt::Write;
 use std::io::{stdin, Read};
-use std::mem::size_of_val;
 
 fn main() -> Result<(), Box<dyn Error>> {
     let mut output = String::new();
@@ -12,26 +9,40 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut input = input.split_ascii_whitespace().flat_map(str::parse::<usize>);
 
     let n = input.next().unwrap();
-    let mut data = input
-        .by_ref()
-        .take(n)
-        .map(|d| (d, 0))
-        .collect::<Vec<(usize, usize)>>();
+    let mut data = input.by_ref().take(n).collect::<Vec<usize>>();
     let m = input.next().unwrap();
 
+    let mut diff = vec![0; n + 1];
+
+    fn update(diff: &mut Vec<usize>, start: usize, end: usize, val: usize) {
+        diff[start] ^= val;
+        if end + 1 < diff.len() {
+            diff[end + 1] ^= val;
+        }
+    }
+
+    fn query(diff: &Vec<usize>, idx: usize) -> usize {
+        let mut result = 0;
+        for jdx in 0..=idx {
+            result ^= diff[jdx];
+        }
+        result
+    }
+
+    for idx in 0..n {
+        update(&mut diff, idx, idx, data[idx]);
+    }
     for _ in 0..m {
-        if input.next().unwrap() == 1 {
-            let s = input.next().unwrap();
+        let t = input.next().unwrap();
+        if t == 1 {
+            let a = input.next().unwrap();
             let b = input.next().unwrap();
-            let n = input.next().unwrap();
-            for idx in s..=b {
-                data[idx].1 ^= n;
-            }
+            let c = input.next().unwrap();
+            update(&mut diff, a, b, c);
         } else {
-            let idx = input.next().unwrap();
-            let mut result = data[idx].0;
-            data[idx].0 ^= data[idx].1;
-            writeln!(output, "{}", data[idx].0)?;
+            let a = input.next().unwrap();
+            let ans = query(&diff, a);
+            writeln!(output, "{}", ans)?;
         }
     }
     print!("{}", output);
