@@ -15,8 +15,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut data = input
         .by_ref()
         .take(n)
-        .map(|d| (d, Vec::new()))
-        .collect::<Vec<(usize, Vec<usize>)>>();
+        .map(|d| (d, 0))
+        .collect::<Vec<(usize, usize)>>();
     let m = input.next().unwrap();
 
     for _ in 0..m {
@@ -25,16 +25,12 @@ fn main() -> Result<(), Box<dyn Error>> {
             let b = input.next().unwrap();
             let n = input.next().unwrap();
             for idx in s..=b {
-                data[idx].1.push(n);
+                data[idx].1 ^= n;
             }
         } else {
             let idx = input.next().unwrap();
             let mut result = data[idx].0;
-            for val in &data[idx].1 {
-                result ^= val;
-            }
-            data[idx].0 = result;
-            data[idx].1.clear();
+            data[idx].0 ^= data[idx].1;
             writeln!(output, "{}", data[idx].0)?;
         }
     }
