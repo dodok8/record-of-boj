@@ -2,8 +2,7 @@
   "name": "BOJ Setting",
   "features": {
     "ghcr.io/devcontainers/features/git:1": {},
-    "ghcr.io/shyim/devcontainers-features/bun:0": {},
-    "ghcr.io/standard-io/devcontainers-templates/python3-poetry-pyenv:0.0.3" :{},
-    "ghcr.io/devcontainers/templates/rust:4.0.2": {}
+    "ghcr.io/devcontainers/features/rust:1": {},
+    "ghcr.io/shyim/devcontainers-features/bun:0": {}
   }
 }
