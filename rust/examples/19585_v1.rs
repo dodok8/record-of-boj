@@ -1,12 +1,12 @@
 // 전설
 
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 use std::error::Error;
 use std::fmt::Write;
 use std::io::{stdin, Read};
 
 struct Trie {
-    tree: HashMap<u8, Trie>,
+    tree: BTreeMap<u8, Trie>,
     is_word: bool,
 }
 
@@ -16,23 +16,13 @@ impl Trie {
             return;
         }
         let entry = self.tree.entry(word[0]).or_insert_with(|| Trie {
-            tree: HashMap::new(),
+            tree: BTreeMap::new(),
             is_word: false,
         });
         if word.len() == 1 {
             entry.is_word = true;
         }
         entry.insert(&word[1..]);
-    }
-
-    fn print(&self, depth: usize, output: &mut String) {
-        for (key, next_trie) in &self.tree {
-            for _ in 0..depth {
-                write!(output, "--").unwrap();
-            }
-            writeln!(output, "{} / {}", key, next_trie.is_word).unwrap();
-            next_trie.print(depth + 1, output);
-        }
     }
 
     fn find(&self, word: &[u8], idx: usize, result: &mut Vec<bool>) {
@@ -60,33 +50,29 @@ fn main() -> Result<(), Box<dyn Error>> {
     let num_c = input.next().unwrap().parse::<usize>()?;
     let num_n = input.next().unwrap().parse::<usize>()?;
 
-    let colors = input
-        .by_ref()
-        .take(num_c)
-        .map(|x| x.chars().map(|c| c as u8).collect::<Vec<u8>>())
-        .collect::<Vec<Vec<u8>>>();
-
-    let nicknames = input
-        .by_ref()
-        .take(num_n)
-        .map(|x| x.chars().rev().map(|c| c as u8).collect::<Vec<u8>>())
-        .collect::<Vec<Vec<u8>>>();
-
     let mut color_trie = Trie {
         is_word: false,
-        tree: HashMap::new(),
+        tree: BTreeMap::new(),
     };
-
-    for color in colors {
-        color_trie.insert(&color);
-    }
 
     let mut nickname_trie = Trie {
         is_word: false,
-        tree: HashMap::new(),
+        tree: BTreeMap::new(),
     };
 
-    for nickname in nicknames {
+    for color in input
+        .by_ref()
+        .take(num_c)
+        .map(|x| x.chars().map(|c| c as u8).collect::<Vec<u8>>())
+    {
+        color_trie.insert(&color);
+    }
+
+    for nickname in input
+        .by_ref()
+        .take(num_n)
+        .map(|x| x.chars().map(|c| c as u8).collect::<Vec<u8>>())
+    {
         nickname_trie.insert(&nickname);
     }
 
