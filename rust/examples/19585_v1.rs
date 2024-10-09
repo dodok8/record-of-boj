@@ -1,12 +1,12 @@
 // 전설
 
-use std::collections::{BTreeMap, HashMap, HashSet};
+use std::collections::{HashMap, HashSet};
 use std::error::Error;
 use std::fmt::Write;
 use std::io::{stdin, Read};
 
 struct Trie {
-    tree: BTreeMap<u8, Trie>,
+    tree: HashMap<u8, Trie>,
     is_word: bool,
 }
 
@@ -16,7 +16,7 @@ impl Trie {
             return;
         }
         let entry = self.tree.entry(word[0]).or_insert_with(|| Trie {
-            tree: BTreeMap::new(),
+            tree: HashMap::new(),
             is_word: false,
         });
         if word.len() == 1 {
@@ -28,7 +28,7 @@ impl Trie {
     fn find(&self, word: &[u8], idx: usize, result: &mut Vec<usize>) {
         if self.is_word {
             // 단어라서 넣음
-            result.push((idx - 1) as usize);
+            result.push(idx - 1);
         }
 
         if word.is_empty() {
@@ -52,38 +52,25 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let mut color_trie = Trie {
         is_word: false,
-        tree: BTreeMap::new(),
+        tree: HashMap::new(),
     };
 
-    for color in input
-        .by_ref()
-        .take(num_c)
-        .map(|x| x.chars().map(|c| c as u8).collect::<Vec<u8>>())
-    {
-        color_trie.insert(&color);
+    for color in input.by_ref().take(num_c).map(|x| x.as_bytes()) {
+        color_trie.insert(color);
     }
 
-    let nicknames: Vec<Vec<u8>> = input
-        .by_ref()
-        .take(num_n)
-        .map(|x| x.chars().map(|c| c as u8).collect::<Vec<u8>>())
-        .collect();
+    let nicknames: Vec<&[u8]> = input.by_ref().take(num_n).map(|x| x.as_bytes()).collect();
 
-    let nickname_set: HashSet<Vec<u8>> = nicknames.into_iter().collect();
+    let nickname_set: HashSet<&[u8]> = nicknames.into_iter().collect();
 
     let num_q = input.next().unwrap().parse::<usize>()?;
 
     for _ in 0..num_q {
-        let mut team = input
-            .next()
-            .unwrap()
-            .chars()
-            .map(|c| c as u8)
-            .collect::<Vec<u8>>();
+        let team = input.next().unwrap().as_bytes();
 
         let mut color_result = vec![];
 
-        color_trie.find(&team, 0, &mut color_result);
+        color_trie.find(team, 0, &mut color_result);
         let mut result = false;
 
         for cdx in color_result {
