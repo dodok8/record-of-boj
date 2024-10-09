@@ -25,7 +25,7 @@ impl Trie {
                 Trie {
                     tree: BTreeMap::new(),
                     word: 0,
-                    count: 0,
+                    count: 1,
                 },
             );
             self.tree.get_mut(&word[0]).unwrap()
@@ -46,11 +46,9 @@ impl Trie {
             }
 
             if word.is_empty() {
-                for v in t.tree.values() {
-                    recursive(v, result, word);
-                }
-                if t.tree.is_empty() {
-                    *result += t.count;
+                *result += t.count;
+                if t.word != 0 {
+                    *result -= t.word;
                 }
             } else if let Some(next_trie) = t.tree.get(&word[0]) {
                 recursive(next_trie, result, &word[1..]);
