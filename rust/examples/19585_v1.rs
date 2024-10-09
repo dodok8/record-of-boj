@@ -1,6 +1,6 @@
 // 전설
 
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, HashMap, HashSet};
 use std::error::Error;
 use std::fmt::Write;
 use std::io::{stdin, Read};
@@ -25,10 +25,10 @@ impl Trie {
         entry.insert(&word[1..]);
     }
 
-    fn find(&self, word: &[u8], idx: usize, result: &mut Vec<bool>) {
+    fn find(&self, word: &[u8], idx: usize, result: &mut Vec<usize>) {
         if self.is_word {
             // 단어라서 넣음
-            result[idx - 1] = true;
+            result.push((idx - 1) as usize);
         }
 
         if word.is_empty() {
@@ -55,11 +55,6 @@ fn main() -> Result<(), Box<dyn Error>> {
         tree: BTreeMap::new(),
     };
 
-    let mut nickname_trie = Trie {
-        is_word: false,
-        tree: BTreeMap::new(),
-    };
-
     for color in input
         .by_ref()
         .take(num_c)
@@ -68,13 +63,13 @@ fn main() -> Result<(), Box<dyn Error>> {
         color_trie.insert(&color);
     }
 
-    for nickname in input
+    let nicknames: Vec<Vec<u8>> = input
         .by_ref()
         .take(num_n)
         .map(|x| x.chars().map(|c| c as u8).collect::<Vec<u8>>())
-    {
-        nickname_trie.insert(&nickname);
-    }
+        .collect();
+
+    let nickname_set: HashSet<Vec<u8>> = nicknames.into_iter().collect();
 
     let num_q = input.next().unwrap().parse::<usize>()?;
 
@@ -86,19 +81,13 @@ fn main() -> Result<(), Box<dyn Error>> {
             .map(|c| c as u8)
             .collect::<Vec<u8>>();
 
-        let mut nickname_result = vec![false; team.len()];
-        let mut color_result = vec![false; team.len()];
+        let mut color_result = vec![];
 
         color_trie.find(&team, 0, &mut color_result);
-        team.reverse();
-        nickname_trie.find(&team, 0, &mut nickname_result);
-        // writeln!(output, "nick: {:?}", nickname_result)?;
-        // writeln!(output, "color: {:?}", color_result)?;
         let mut result = false;
-        for cdx in 0..=(team.len() - 2) {
-            let ndx = team.len() - 2 - cdx;
 
-            if nickname_result[ndx] && color_result[cdx] {
+        for cdx in color_result {
+            if nickname_set.contains(&team[(cdx + 1)..]) {
                 result = true;
                 break;
             }
