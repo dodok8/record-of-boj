@@ -16,24 +16,19 @@ fn main() -> Result<(), Box<dyn Error>> {
         points.push((input.next().unwrap(), input.next().unwrap()));
     }
 
-    let mut ans = 0;
-    for (idx, point) in points.iter().enumerate() {
-        let mut cnt_x = 0usize;
-        let mut cnt_y = 0usize;
-        for (jdx, target) in points.iter().enumerate() {
-            if jdx == idx {
-                continue;
-            }
-            if target.0 == point.0 {
-                cnt_x += 1;
-            }
-            if target.1 == point.1 {
-                cnt_y += 1;
-            }
-        }
+    let mut cnt_x = vec![0; 100_001];
+    let mut cnt_y = vec![0; 100_001];
 
-        ans += (cnt_x) * (cnt_y)
+    for point in &points {
+        cnt_x[point.0] += 1;
+        cnt_y[point.1] += 1;
     }
+
+    let mut ans = 0;
+    for point in &points {
+        ans += (cnt_x[point.0] - 1) * (cnt_y[point.1] - 1);
+    }
+
     writeln!(output, "{}", ans)?;
     print!("{}", output);
     Ok(())
