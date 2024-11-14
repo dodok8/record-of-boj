@@ -24,7 +24,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         cnt_y[point.1] += 1;
     }
 
-    let mut ans = 0;
+    let mut ans = 0usize;
     for point in &points {
         ans += (cnt_x[point.0] - 1) * (cnt_y[point.1] - 1);
     }
