@@ -1,4 +1,4 @@
-//절연 구간 최소화
+// 절연 구간 최소화
 
 use std::collections::VecDeque;
 use std::error::Error;
@@ -31,21 +31,21 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let mut distances = vec![usize::MAX; n + 1];
     distances[start] = 0;
-    let mut travel_deq: VecDeque<Edge> = VecDeque::new();
+
+    let mut travel_deq: VecDeque<(usize, Weight)> = VecDeque::new();
     travel_deq.push_front((start, 0));
+    travel_deq.push_front((start, 1)); // 시작은 두 타입이 가능하다!
 
-    while !travel_deq.is_empty() {
-        let (vertex, weight) = travel_deq.pop_front().unwrap();
-
-        for (next_v, d_w) in &graph[vertex] {
-            let next_w = weight + d_w;
-            if next_w < distances[*next_v] {
-                distances[*next_v] = next_w;
-
-                if *d_w == 1 {
-                    travel_deq.push_back((*next_v, next_w));
+    while let Some((vertex, curr_type)) = travel_deq.pop_front() {
+        for &(next_v, edge_type) in &graph[vertex] {
+            let next_changes = distances[vertex] + (curr_type ^ edge_type);
+            // 가중치가 현재와 같은 지 다른지 여부만 알면 되니까, xor, 따라서 0-1 BFS
+            if next_changes < distances[next_v] {
+                distances[next_v] = next_changes;
+                if curr_type ^ edge_type == 0 {
+                    travel_deq.push_front((next_v, edge_type));
                 } else {
-                    travel_deq.push_front((*next_v, next_w));
+                    travel_deq.push_back((next_v, edge_type));
                 }
             }
         }
