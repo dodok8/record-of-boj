@@ -1,3 +1,5 @@
+// 너 그리고 나 (NAVILLERA)
+
 use std::error::Error;
 use std::fmt::Write;
 use std::io::{stdin, Read};
@@ -14,19 +16,20 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let dist = ((x as f64).powi(2) + (y as f64).powi(2)).sqrt();
     let c = c as f64;
-    
+
     let ans = if dist == 0.0 {
         0
-    } else if (dist - c).abs() < 1e-10 {
-        1
-    } else if dist < c {
-        2
     } else {
-        let min_moves = (dist / c).ceil() as i64;
-        if min_moves % 2 == 0 {
-            min_moves
+        let q = (dist / (2.0 * c)).floor() as i64; // 2c로 나눈 몫
+        let r = dist - (2.0 * c * q as f64); // 나머지
+
+        if r == 0.0 {
+            2 * q
+        } else if (r - c).abs() < 1e-10 {
+            // 이 부분은 처음엔 == 0 였는데 실수 연산 특성 감안해서 수정했습니다.
+            2 * q + 1
         } else {
-            min_moves + 1
+            2 * q + 2
         }
     };
 
