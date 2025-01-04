@@ -15,7 +15,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     for _ in 0..t {
         let mut n = input.next().unwrap();
         let mut max_n = n;
-        while n % 10 != 1 {
+        while n != 1 {
             if n % 2 == 0 {
                 n /= 2;
             } else {
