@@ -90,23 +90,6 @@ fn get_goldbach_pair(n: usize, primes: &Vec<usize>, primes_set: &HashSet<usize>)
     result
 }
 
-fn get_ans(
-    ans: &mut Vec<usize>,
-    n: usize,
-    k: usize,
-    primes: &Vec<usize>,
-    primes_set: &HashSet<usize>,
-) {
-    if k == 2 {
-        ans.extend(get_goldbach_pair(n, primes, primes_set));
-    } else if n % 2 == 1 {
-        ans.push(3);
-        get_ans(ans, n - 3, k - 1, primes, primes_set);
-    } else {
-        ans.push(2);
-        get_ans(ans, n - 2, k - 1, primes, primes_set);
-    }
-}
 fn main() -> Result<(), Box<dyn Error>> {
     let mut output = String::new();
     let mut input = String::new();
@@ -116,23 +99,91 @@ fn main() -> Result<(), Box<dyn Error>> {
     let n = input.next().unwrap();
     let k = input.next().unwrap();
 
+    // 기본 검사
+    if n < 2 * k || (k > n) {
+        writeln!(output, "-1")?;
+        print!("{}", output);
+        return Ok(());
+    }
+
+    let mut remaining = n;
+    let mut count = k;
+    let mut ans = Vec::with_capacity(k);
     let primes = usize::get_primes_le(n);
     let primes_set: HashSet<usize> = HashSet::from_iter(primes.iter().cloned());
 
-    let mut ans = Vec::new();
-    if n < 2 * k {
-        if k == 1 && primes_set.contains(&n) {
-            writeln!(output, "n")?;
+    // k가 1인 경우 별도 처리
+    if k == 1 {
+        if primes_set.contains(&n) {
+            writeln!(output, "{}", n)?;
         } else {
             writeln!(output, "-1")?;
         }
+        print!("{}", output);
+        return Ok(());
+    }
+
+    // k가 2인 경우 골드바흐 쌍으로 처리
+    if k == 2 {
+        let mut found = false;
+        for &prime in &primes {
+            if prime > remaining {
+                break;
+            }
+            if primes_set.contains(&(remaining - prime)) {
+                ans.push(prime);
+                ans.push(remaining - prime);
+                found = true;
+                break;
+            }
+        }
+        if !found {
+            writeln!(output, "-1")?;
+        } else {
+            for num in ans {
+                write!(output, "{} ", num)?;
+            }
+            writeln!(output)?;
+        }
+        print!("{}", output);
+        return Ok(());
+    }
+
+    // k >= 3인 경우
+    while remaining >= 5 && count > 2 {
+        if remaining % 2 == 0 {
+            ans.push(2);
+            remaining -= 2;
+        } else {
+            ans.push(3);
+            remaining -= 3;
+        }
+        count -= 1;
+    }
+
+    // 남은 수를 2개의 소수로 분해
+    let mut found = false;
+    for &prime in &primes {
+        if prime > remaining {
+            break;
+        }
+        if primes_set.contains(&(remaining - prime)) {
+            ans.push(prime);
+            ans.push(remaining - prime);
+            found = true;
+            break;
+        }
+    }
+
+    if !found || ans.len() != k {
+        writeln!(output, "-1")?;
     } else {
-        get_ans(&mut ans, n, k, &primes, &primes_set);
         for num in ans {
             write!(output, "{} ", num)?;
         }
         writeln!(output)?;
     }
+    
     print!("{}", output);
     Ok(())
 }
