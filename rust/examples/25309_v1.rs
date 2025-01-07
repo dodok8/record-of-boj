@@ -106,13 +106,11 @@ fn main() -> Result<(), Box<dyn Error>> {
         return Ok(());
     }
 
-    let mut remaining = n;
-    let mut count = k;
-    let mut ans = Vec::with_capacity(k);
     let primes = usize::get_primes_le(n);
     let primes_set: HashSet<usize> = HashSet::from_iter(primes.iter().cloned());
+    let mut ans = Vec::with_capacity(k);
 
-    // k가 1인 경우 별도 처리
+    // k=1인 경우
     if k == 1 {
         if primes_set.contains(&n) {
             writeln!(output, "{}", n)?;
@@ -123,16 +121,16 @@ fn main() -> Result<(), Box<dyn Error>> {
         return Ok(());
     }
 
-    // k가 2인 경우 골드바흐 쌍으로 처리
+    // k=2인 경우
     if k == 2 {
         let mut found = false;
         for &prime in &primes {
-            if prime > remaining {
+            if prime > n {
                 break;
             }
-            if primes_set.contains(&(remaining - prime)) {
+            if primes_set.contains(&(n - prime)) {
                 ans.push(prime);
-                ans.push(remaining - prime);
+                ans.push(n - prime);
                 found = true;
                 break;
             }
@@ -149,39 +147,42 @@ fn main() -> Result<(), Box<dyn Error>> {
         return Ok(());
     }
 
-    // k >= 3인 경우
-    while remaining >= 5 && count > 2 {
-        if remaining % 2 == 0 {
-            ans.push(2);
-            remaining -= 2;
-        } else {
-            ans.push(3);
-            remaining -= 3;
+    // k≥3인 경우
+    let first = if n % 2 == 0 { 2 } else { 3 };
+    ans.push(first);
+    
+    // 남은 수를 (k-1)개로 분해
+    let remaining = n - first;
+    if remaining >= 2 * (k - 1) {
+        let second = if (remaining - 2 * (k - 2)) >= 4 { 2 } else { 3 };
+        ans.push(second);
+        
+        // k-2개의 2 추가
+        ans.extend(vec![2; k - 2]);
+        
+        // 마지막으로 남은 수 처리
+        let final_remaining = remaining - second - 2 * (k - 2);
+        if final_remaining < 2 {
+            writeln!(output, "-1")?;
+            print!("{}", output);
+            return Ok(());
         }
-        count -= 1;
-    }
-
-    // 남은 수를 2개의 소수로 분해
-    let mut found = false;
-    for &prime in &primes {
-        if prime > remaining {
-            break;
+        
+        // final_remaining이 소수인지 확인
+        if !primes_set.contains(&final_remaining) {
+            writeln!(output, "-1")?;
+            print!("{}", output);
+            return Ok(());
         }
-        if primes_set.contains(&(remaining - prime)) {
-            ans.push(prime);
-            ans.push(remaining - prime);
-            found = true;
-            break;
-        }
-    }
-
-    if !found || ans.len() != k {
-        writeln!(output, "-1")?;
-    } else {
+        ans.pop();  // 마지막 2를 제거
+        ans.push(final_remaining);
+        
         for num in ans {
             write!(output, "{} ", num)?;
         }
         writeln!(output)?;
+    } else {
+        writeln!(output, "-1")?;
     }
     
     print!("{}", output);
