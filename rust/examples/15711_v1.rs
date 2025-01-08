@@ -5,36 +5,35 @@ use std::error::Error;
 use std::fmt::Write;
 use std::io::{stdin, Read};
 
-const SIEVE_MAX: usize = 1_000_000; // 에라토스테네스의 체를 적용할 최대값
+const SIEVE_MAX: usize = 1_000_000;
 
-fn get_primes_le(num: usize) -> HashSet<usize> {
-    let num = num.min(SIEVE_MAX) as usize;
-    let mut is_prime = vec![true; num / 3 + 1];
-    let mut primes = vec![2, 3];
+trait Primes {
+    fn get_primes_le(num: usize) -> Vec<usize>;
+}
 
-    for idx in 0..is_prime.len() {
-        let curr = 6 * ((idx + 1) / 2) + 1 + (idx + 1) % 2 * 4;
-        if curr > num {
-            break;
-        }
-        if is_prime[idx] {
-            primes.push(curr);
-        }
-        for &min_p in primes[2..].iter() {
-            let v = curr * min_p;
-            if v > num {
-                break;
+impl Primes for usize {
+    fn get_primes_le(num: usize) -> Vec<usize> {
+        let mut is_prime = vec![true; num / 3 + 1];
+        let mut primes = vec![2, 3];
+        for idx in 0..is_prime.len() {
+            let curr = 6 * ((idx + 1) / 2) + 1 + (idx + 1) % 2 * 4;
+            if is_prime[idx] {
+                primes.push(curr);
             }
-            let v_idx = (v - 1) / 3 - 1;
-            if v_idx < is_prime.len() {
+            for &min_p in primes[2..].iter() {
+                let v = curr * min_p;
+                if v > num {
+                    break;
+                }
+                let v_idx = (v - 1) / 3 - 1;
                 is_prime[v_idx] = false;
-            }
-            if curr % min_p == 0 {
-                break;
+                if curr % min_p == 0 {
+                    break;
+                }
             }
         }
+        primes
     }
-    primes.into_iter().collect()
 }
 
 fn is_prime_large(n: usize, small_primes: &HashSet<usize>) -> bool {
@@ -49,6 +48,7 @@ fn is_prime_large(n: usize, small_primes: &HashSet<usize>) -> bool {
     // 작은 소수들로 먼저 나누어보기
     for &p in small_primes {
         if p * p > n {
+            // p 가 sqrt(n)보다 크다는 소리이므로 break
             break;
         }
         if n % p == 0 {
@@ -58,6 +58,7 @@ fn is_prime_large(n: usize, small_primes: &HashSet<usize>) -> bool {
 
     let sqrt_n = (n as f64).sqrt() as usize;
     let mut i = SIEVE_MAX;
+
     while i <= sqrt_n {
         if n % i == 0 {
             return false;
@@ -74,7 +75,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut input = input.split_ascii_whitespace().flat_map(str::parse::<usize>);
 
     let t = input.next().unwrap();
-    let small_primes = get_primes_le(SIEVE_MAX);
+    let small_primes: HashSet<usize> = usize::get_primes_le(SIEVE_MAX).into_iter().collect();
 
     for _ in 0..t {
         let a = input.next().unwrap();
@@ -82,10 +83,13 @@ fn main() -> Result<(), Box<dyn Error>> {
         let sum = a + b;
 
         if sum <= 3 {
+            // 합이 3 보다 작으면 불가능
             writeln!(output, "NO")?;
         } else if sum % 2 == 0 {
+            // 골드바흐의 추측
             writeln!(output, "YES")?;
         } else if is_prime_large(sum - 2, &small_primes) {
+            // 합이 홀수인데 소수 + 소수 조합이려면 하나는 무조건 2이고, 다른 하나는 소수 여야함.
             writeln!(output, "YES")?;
         } else {
             writeln!(output, "NO")?;
