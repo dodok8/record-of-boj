@@ -26,8 +26,14 @@ fn main() -> Result<(), Box<dyn Error>> {
     travel_q.push_back((0_usize, 1_usize));
     let mut visited = vec![usize::MAX; num_v + 1];
     visited[1] = 0;
+
     while !travel_q.is_empty() {
         let (dist, v) = travel_q.pop_front().unwrap();
+        if v == num_v {
+            writeln!(output, "{}", dist)?;
+            print!("{}", output);
+            return Ok(());
+        }
         for &next_v in &graph[v] {
             if visited[next_v] == usize::MAX {
                 visited[next_v] = dist + 1;
@@ -36,7 +42,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
     }
 
-    writeln!(output, "{}", visited[num_v])?;
+    writeln!(output, "-1")?;
     print!("{}", output);
     Ok(())
 }
