@@ -21,14 +21,15 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let ans = {
         let mut facto = 1_usize;
-        let mut idx = 1_usize;
+        let mut idx = n;
 
         loop {
-            facto *= idx % m;
-            if facto == 0 || idx == n {
-                break facto % m;
+            facto *= idx;
+            facto %= m;
+            if facto == 0 || idx == 1 {
+                break facto;
             }
-            idx += 1;
+            idx -= 1;
         }
     };
     writeln!(output, "{}", ans)?;
