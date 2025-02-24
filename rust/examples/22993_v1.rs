@@ -18,7 +18,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let mut last_survived = true;
     for num in nums {
-        if num > curr {
+        if num >= curr {
             last_survived = false;
             break;
         } else {
