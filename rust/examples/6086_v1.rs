@@ -6,6 +6,13 @@ use std::error::Error;
 use std::fmt::Write;
 use std::io::{stdin, Read};
 
+fn convert_to_num(letter: char) -> usize {
+    match letter {
+        'a'..='z' => (letter as u8 - b'a') as usize + 1,
+        'A'..='Z' => (letter as u8 - b'A') as usize + 27,
+        _ => 0,
+    }
+}
 fn main() -> Result<(), Box<dyn Error>> {
     let mut output = String::new();
     let mut input = String::new();
@@ -14,14 +21,12 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let n = input.next().unwrap().parse::<usize>()?;
 
-    let mut capacity = vec![vec![0; 27]; 27];
-    let mut flow = vec![vec![0; 27]; 27];
-
-    let convert_letter = |x: &str| (x.chars().take(1).next().unwrap() as u8 - b'A' + 1) as usize;
+    let mut capacity = vec![vec![0; 53]; 53];
+    let mut flow = vec![vec![0; 53]; 53];
 
     for _ in 0..n {
-        let start = convert_letter(input.next().unwrap());
-        let end = convert_letter(input.next().unwrap());
+        let start = convert_to_num(input.next().unwrap().chars().next().unwrap());
+        let end = convert_to_num(input.next().unwrap().chars().next().unwrap());
         let c = input.next().unwrap().parse::<i64>()?;
 
         capacity[start][end] += c;
@@ -29,12 +34,12 @@ fn main() -> Result<(), Box<dyn Error>> {
         // 단 방향이랑 다르게 양 방향 다 넣어야 한다.
     }
 
-    let source = convert_letter("A");
-    let sink = convert_letter("Z");
+    let source = convert_to_num('A');
+    let sink = convert_to_num('Z');
     let mut tot_flow = 0;
 
     loop {
-        let mut parents = vec![0; 27];
+        let mut parents = vec![0; 53];
         let mut travel_q = VecDeque::new();
 
         parents[source] = source;
@@ -43,7 +48,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         while !travel_q.is_empty() && parents[sink] == 0 {
             let curr_v = travel_q.pop_front().unwrap();
 
-            for next_v in 1..27 {
+            for next_v in 1..53 {
                 if capacity[curr_v][next_v] - flow[curr_v][next_v] > 0 && parents[next_v] == 0 {
                     travel_q.push_back(next_v);
                     parents[next_v] = curr_v;
