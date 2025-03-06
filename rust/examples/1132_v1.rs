@@ -22,33 +22,43 @@ fn main() -> Result<(), Box<dyn Error>> {
         let letters = input.next().unwrap().chars().collect::<Vec<char>>();
         for (idx, &letter) in letters.iter().rev().enumerate() {
             let curr_n = convert_to_num(&letter);
-            if idx == letters.len() - 1 - idx {
+            if idx == letters.len() - 1 {
                 non_zero[curr_n] = true;
             }
             sums[curr_n] += 10u128.pow(idx as u32);
         }
     }
 
-    let mut zero_idx = 0;
+    let mut unused_false = false;
 
+    let mut some_unused = false;
     for idx in 0..10 {
-        if !non_zero[idx] && sums[zero_idx] > sums[idx] {
-            zero_idx = idx;
+        if sums[idx] == 0 {
+            some_unused = true;
+            break;
         }
     }
 
-    nums[zero_idx] = 0;
+    if !some_unused {
+        let mut zero_idx = 0;
+        let mut min_sum = u128::MAX;
 
-    let mut sorted_nums: Vec<(u128, usize)> = sums
-        .iter()
-        .enumerate()
-        .filter(|&(idx, _val)| idx != zero_idx)
-        .map(|(a, &b)| (b, a))
-        .collect();
+        for idx in 0..10 {
+            if !non_zero[idx] && sums[idx] < min_sum {
+                min_sum = sums[idx];
+                zero_idx = idx;
+            }
+        }
 
-    sorted_nums.sort_unstable();
+        sums[zero_idx] = 0;
+    }
 
-    for (&(sum, letter), val) in sorted_nums.iter().zip(1..=9) {
+    let mut sorted_nums: Vec<(u128, usize)> =
+        sums.iter().enumerate().map(|(a, &b)| (b, a)).collect();
+
+    sorted_nums.sort_unstable_by(|a, b| b.0.cmp(&a.0));
+
+    for (&(_sum, letter), val) in sorted_nums.iter().zip((0..=9).rev()) {
         nums[letter] = val;
     }
 
@@ -58,6 +68,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     }
 
     writeln!(output, "{}", ans)?;
+
     print!("{}", output);
     Ok(())
 }
