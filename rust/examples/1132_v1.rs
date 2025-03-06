@@ -22,10 +22,10 @@ fn main() -> Result<(), Box<dyn Error>> {
         let letters = input.next().unwrap().chars().collect::<Vec<char>>();
         for (idx, &letter) in letters.iter().rev().enumerate() {
             let curr_n = convert_to_num(&letter);
-            if idx == letters.len() - 1 {
+            if idx == letters.len() - 1 - idx {
                 non_zero[curr_n] = true;
             }
-            sums[curr_n] += 10usize.pow(idx as u32);
+            sums[curr_n] += 10u128.pow(idx as u32);
         }
     }
 
@@ -39,7 +39,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     nums[zero_idx] = 0;
 
-    let mut sorted_nums: Vec<(usize, usize)> = sums
+    let mut sorted_nums: Vec<(u128, usize)> = sums
         .iter()
         .enumerate()
         .filter(|&(idx, _val)| idx != zero_idx)
@@ -48,9 +48,13 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     sorted_nums.sort_unstable();
 
+    for (&(sum, letter), val) in sorted_nums.iter().zip(1..=9) {
+        nums[letter] = val;
+    }
+
     let mut ans = 0;
-    for (&(sum, _letter), val) in sorted_nums.iter().zip(1..=9) {
-        ans += sum * val;
+    for idx in 0..10 {
+        ans += sums[idx] * nums[idx];
     }
 
     writeln!(output, "{}", ans)?;
