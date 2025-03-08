@@ -14,11 +14,11 @@
   },
 	"class Heap": {
 		"scope": "python",
-		"prefix"  "Heap",
+		"prefix":  "Heap",
 		"body": [
 			"import heapq as pq",
 			"from typing import Generic, TypeVar"
-			"T = TypeVar("T")"
+			"T = TypeVar("T")",
 			"class Heap(Generic[T]):",
 			"    def __init__(self, data: list[T] = []) -> None:",
 			"        self.data = data.copy()",
