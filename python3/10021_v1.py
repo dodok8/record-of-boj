@@ -1,3 +1,5 @@
+# Watering the Fields
+
 from sys import stdin
 import heapq as pq
 
@@ -44,19 +46,25 @@ def calc_cost(i, j):
 
 contained = [False for _ in range(num_v)]
 edges_pq = Heap([(0, 0)])
-
 dist = 0
+edge_cnt = 0
 
-while len(edges_pq) > 0:
-    curr_v, curr_w = edges_pq.pop()
+
+while len(edges_pq) > 0 and edge_cnt < num_v:
+    curr_w, curr_v = edges_pq.pop()
     if contained[curr_v]:
         continue
     contained[curr_v] = True
     dist += curr_w
-    for next_v in range(num_v):
-        if not contained[next_v]:
-            next_w = calc_cost(next_v, curr_v)
-            if next_w > min_cost:
-                edges_pq.push((next_v, next_w))
+    edge_cnt += 1
 
-print(dist)
+    for next_v in range(num_v):
+        if not contained[next_v] and curr_v != next_v:
+            next_w = calc_cost(curr_v, next_v)
+            if next_w >= min_cost:
+                edges_pq.push((next_w, next_v))
+
+if edge_cnt == num_v:
+    print(dist)
+else:
+    print(-1)
