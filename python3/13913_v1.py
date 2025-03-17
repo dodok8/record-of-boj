@@ -8,8 +8,7 @@ if n > k:
 
 else:
     dists = [-1 for idx in range(100001)]
-    parents = [0 for idx in range(100001)]
-    parents[n] = -1
+    parents = [-1 for idx in range(100001)]
     dists[n] = 0
 
     tq = deque()
@@ -18,8 +17,11 @@ else:
     while tq:
         dist, x = tq.popleft()
 
+        if x == k:
+            break
+
         for nx in [x - 1, x + 1, x * 2]:
-            if nx < 0 or nx >= 100000:
+            if nx < 0 or nx >= 100001:
                 continue
             if dists[nx] == -1:
                 dists[nx] = dist + 1
