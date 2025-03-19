@@ -7,7 +7,7 @@ def read():
     return stdin.readline().rstrip()
 
 
-n, game = read.split()
+n, game = read().split()
 
 n = int(n)
 
