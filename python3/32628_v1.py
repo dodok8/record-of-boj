@@ -13,22 +13,25 @@ a = list(map(int, read().split()))
 b = list(map(int, read().split()))
 
 # 누적합 배열
+a_prefix = [0]
+b_prefix = [0]
 
-for idx in range(1, n):
-    a[idx] = a[idx - 1] + a[idx]
-    b[idx] = b[idx - 1] + b[idx]
+for i in range(n):
+    a_prefix.append(a_prefix[-1] + a[i])
+    b_prefix.append(b_prefix[-1] + b[i])
 
 min_won = maxsize
 
-for xdx in range(0, k + 1):
-    # 가능한 경우 수는 k + 1 개
-    for kdx in range(0, xdx + 1):
-        idx = n - 1 - kdx
-        jdx = n - 1 - k + kdx
+for kdx in range(k + 1):
+    if kdx > n or (k - kdx) > n:
+        continue
 
-        won = max(a[idx], b[jdx])
+    idx = n - kdx
+    jdx = n - k + kdx
 
-        if won < min_won:
-            min_won = won
+    won = max(a_prefix[idx], b_prefix[jdx])
+
+    if won < min_won:
+        min_won = won
 
 print(min_won)
