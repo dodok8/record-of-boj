@@ -20,14 +20,15 @@ for idx in range(1, n):
 
 min_won = maxsize
 
-# 가능한 경우 수는 k + 1 개
-for kdx in range(0, k + 1):
-    idx = n - 1 - kdx
-    jdx = n - 1 - k + kdx
+for xdx in range(0, k + 1):
+    # 가능한 경우 수는 k + 1 개
+    for kdx in range(0, xdx + 1):
+        idx = n - 1 - kdx
+        jdx = n - 1 - k + kdx
 
-    won = max(a[idx], b[jdx])
+        won = max(a[idx], b[jdx])
 
-    if won < min_won:
-        min_won = won
+        if won < min_won:
+            min_won = won
 
 print(min_won)
