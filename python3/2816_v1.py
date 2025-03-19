@@ -22,9 +22,10 @@ while True:
         cursor += 1
         operations.append(1)
     else:
-        channels[cursor], channels[cursor - 1] = channels[cursor - 1], channels[cursor]
-        cursor -= 1
-        operations.append(4)
+        if cursor > 0:
+            channels[cursor], channels[cursor - 1] = channels[cursor - 1], channels[cursor]
+            cursor -= 1
+            operations.append(4)
 
     if channels[0] == "KBS1":
         break
@@ -34,9 +35,10 @@ while True:
         cursor += 1
         operations.append(1)
     else:
-        channels[cursor], channels[cursor - 1] = channels[cursor - 1], channels[cursor]
-        cursor -= 1
-        operations.append(4)
+        if cursor > 0:
+            channels[cursor], channels[cursor - 1] = channels[cursor - 1], channels[cursor]
+            cursor -= 1
+            operations.append(4)
 
     if channels[1] == "KBS2":
         break
