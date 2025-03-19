@@ -1,4 +1,4 @@
-# 디지털 티비비
+# 디지털 티비
 
 from sys import stdin
 
@@ -41,4 +41,4 @@ while True:
     if channels[1] == "KBS2":
         break
 
-print("".join(operations))
+print("".join(map(str, operations)))
