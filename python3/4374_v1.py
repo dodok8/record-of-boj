@@ -42,10 +42,8 @@ while True:
             if words_dict[word] == n:
                 print(word)
                 word_exist = True
-        if word_exist:
-            print()
         if not word_exist:
             print("There is no such word.")
-
+        print()
     except:
         break
