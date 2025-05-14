@@ -6,25 +6,19 @@ setrecursionlimit(10**6)
 
 read = lambda: stdin.readline().rstrip()
 
-convert = lambda x: ord(x) - 97
-
 
 class Trie:
     def __init__(self, is_word):
-        self.tree = [None for _ in range(27)]
+        self.tree = {}
         self.is_word = is_word
 
     def insert(self, word: list[int]):
-        if len(word) == 0:
-            return
-
-        if self.tree[word[0]] is None:
-            self.tree[word[0]] = Trie(False)
-
-        if len(word) == 1:
-            self.tree[word[0]].is_word = True
-
-        self.tree[word[0]].insert(word[1:])
+        curr_node = self
+        for char in word:
+            if char not in curr_node.tree:
+                curr_node.tree[char] = Trie(False)
+            curr_node = curr_node.tree[char]
+        curr_node.is_word = True
 
     def find(self, word: list[int], idx: int, result: list[int]):
         # 닉네임에서 색 이름이 아니게 되는 인덱스를 result 에 넣기
@@ -34,7 +28,7 @@ class Trie:
         if idx >= len(word):
             return
 
-        if self.tree[word[idx]] is not None:
+        if word[idx] in self.tree:
             self.tree[word[idx]].find(word, idx + 1, result)
 
 
@@ -43,19 +37,19 @@ num_c, num_n = map(int, read().split())
 color_trie = Trie(False)
 
 for idx in range(num_c):
-    color = list(map(convert, read()))
+    color = list(map(ord, read()))
     color_trie.insert(color)
 
 nickname_set = set()
 
 for idx in range(num_n):
-    nickname = list(map(convert, read()))
-    nickname_set.add(tuple(nickname))
+    nickname = tuple(map(ord, read()))
+    nickname_set.add(nickname)
 
 num_q = int(read())
 
 for _ in range(num_q):
-    team = list(map(convert, read()))
+    team = list(map(ord, read()))
 
     color_result = []
     color_trie.find(team, 0, color_result)
