@@ -1,8 +1,6 @@
 # 전설
 
-from sys import stdin, setrecursionlimit
-
-setrecursionlimit(10**6)
+from sys import stdin
 
 read = lambda: stdin.readline().rstrip()
 
@@ -20,16 +18,16 @@ class Trie:
             curr_node = curr_node.tree[char]
         curr_node.is_word = True
 
-    def find(self, word: list[int], idx: int, result: list[int]):
+    def find(self, word: list[int], result: list[int]):
         # 닉네임에서 색 이름이 아니게 되는 인덱스를 result 에 넣기
-        if self.is_word:
-            result.append(idx - 1)
-
-        if idx >= len(word):
-            return
-
-        if word[idx] in self.tree:
-            self.tree[word[idx]].find(word, idx + 1, result)
+        curr_node = self
+        for idx, char in enumerate(word):
+            if curr_node.is_word:
+                result.append(idx - 1)
+            if char in curr_node.tree:
+                curr_node = curr_node.tree[char]
+            else:
+                break
 
 
 num_c, num_n = map(int, read().split())
@@ -52,7 +50,7 @@ for _ in range(num_q):
     team = list(map(ord, read()))
 
     color_result = []
-    color_trie.find(team, 0, color_result)
+    color_trie.find(team, color_result)
 
     result = False
 
