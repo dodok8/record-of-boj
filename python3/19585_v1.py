@@ -6,17 +6,19 @@ setrecursionlimit(10**6)
 
 read = lambda: stdin.readline().rstrip()
 
+convert = lambda x: ord(x) - 97
+
 
 class Trie:
     def __init__(self, is_word):
-        self.tree = {}
+        self.tree = [None for _ in range(27)]
         self.is_word = is_word
 
     def insert(self, word: list[int]):
         if len(word) == 0:
             return
 
-        if word[0] not in self.tree:
+        if self.tree[word[0]] is None:
             self.tree[word[0]] = Trie(False)
 
         if len(word) == 1:
@@ -32,7 +34,7 @@ class Trie:
         if idx >= len(word):
             return
 
-        if word[idx] in self.tree:
+        if self.tree[word[idx]] is not None:
             self.tree[word[idx]].find(word, idx + 1, result)
 
 
@@ -41,19 +43,19 @@ num_c, num_n = map(int, read().split())
 color_trie = Trie(False)
 
 for idx in range(num_c):
-    color = list(map(ord, read()))
+    color = list(map(convert, read()))
     color_trie.insert(color)
 
 nickname_set = set()
 
 for idx in range(num_n):
-    nickname = list(map(ord, read()))
+    nickname = list(map(convert, read()))
     nickname_set.add(tuple(nickname))
 
 num_q = int(read())
 
 for _ in range(num_q):
-    team = list(map(ord, read()))
+    team = list(map(convert, read()))
 
     color_result = []
     color_trie.find(team, 0, color_result)
