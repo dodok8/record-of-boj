@@ -3,17 +3,18 @@
 from sys import stdin
 
 read = lambda: stdin.readline().rstrip()
+convert = lambda x: ord(x) - 97
 
 
 class Trie:
     def __init__(self, is_word):
-        self.tree = {}
+        self.tree = [None for _ in range(27)]
         self.is_word = is_word
 
     def insert(self, word: list[int]):
         curr_node = self
         for char in word:
-            if char not in curr_node.tree:
+            if curr_node.tree[char] is None:
                 curr_node.tree[char] = Trie(False)
             curr_node = curr_node.tree[char]
         curr_node.is_word = True
@@ -27,7 +28,7 @@ class Trie:
         for idx, char in enumerate(word):
             if curr_node.is_word:
                 result.append(idx - 1)
-            if char in curr_node.tree:
+            if curr_node.tree[char] is not None:
                 curr_node = curr_node.tree[char]
             else:
                 break
@@ -40,19 +41,19 @@ num_c, num_n = map(int, read().split())
 color_trie = Trie(False)
 
 for idx in range(num_c):
-    color = list(map(ord, read()))
+    color = list(map(convert, read()))
     color_trie.insert(color)
 
 nickname_set = set()
 
 for idx in range(num_n):
-    nickname = tuple(map(ord, read()))
+    nickname = tuple(map(convert, read()))
     nickname_set.add(nickname)
 
 num_q = int(read())
 
 for _ in range(num_q):
-    team = list(map(ord, read()))
+    team = list(map(convert, read()))
 
     color_result = []
     color_result = color_trie.find(team)
