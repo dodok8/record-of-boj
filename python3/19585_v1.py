@@ -9,7 +9,7 @@ read = lambda: stdin.readline().rstrip()
 
 class Trie:
     def __init__(self, is_word):
-        self.tree = {}  # dict() 대신 {} 사용
+        self.tree = {}
         self.is_word = is_word
 
     def insert(self, word: list[int]):
@@ -21,8 +21,8 @@ class Trie:
 
         if len(word) == 1:
             self.tree[word[0]].is_word = True
-        else:
-            self.tree[word[0]].insert(word[1:])
+
+        self.tree[word[0]].insert(word[1:])
 
     def find(self, word: list[int], idx: int, result: list[int]):
         # 닉네임에서 색 이름이 아니게 되는 인덱스를 result 에 넣기
@@ -67,6 +67,6 @@ for _ in range(num_q):
             break
 
     if not result:
-        print("NO")
+        print("No")
     else:
-        print("YES")
+        print("Yes")
