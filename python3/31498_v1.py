@@ -57,7 +57,7 @@ t = get_move_cnt()
 if t == -1:
     print(-1)
 else:
-    curr_doll = c - get_doll_d(t)
+    curr_doll = a + c - get_doll_d(t)
     if curr_doll > 0:
         print(t)
     else:
