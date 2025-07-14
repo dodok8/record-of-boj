@@ -47,6 +47,27 @@ fn get_intersection(p1: &Point, p2: &Point, p3: &Point, p4: &Point) -> Option<(f
     let p = (p1.0 - p2.0) * (p3.1 - p4.1) - (p1.1 - p2.1) * (p3.0 - p4.0);
 
     if p == 0 {
+        let overlap_x = cmp::max(cmp::min(p1.0, p2.0), cmp::min(p3.0, p4.0))
+            < cmp::min(cmp::max(p1.0, p2.0), cmp::max(p3.0, p4.0));
+        let overlap_y = cmp::max(cmp::min(p1.1, p2.1), cmp::min(p3.1, p4.1))
+            < cmp::min(cmp::max(p1.1, p2.1), cmp::max(p3.1, p4.1));
+
+        if overlap_x || overlap_y {
+            return None;
+        }
+
+        if p1 == p3 && p2 != p4 {
+            return Some((p1.0 as f64, p1.1 as f64));
+        }
+        if p2 == p3 && p1 != p4 {
+            return Some((p2.0 as f64, p2.1 as f64));
+        }
+        if p1 == p4 && p2 != p3 {
+            return Some((p1.0 as f64, p1.1 as f64));
+        }
+        if p2 == p4 && p1 != p3 {
+            return Some((p2.0 as f64, p2.1 as f64));
+        }
         None
     } else {
         let x: f64 = (px as f64) / (p as f64);
