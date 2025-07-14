@@ -40,9 +40,10 @@ fn check_crossed(p1: &Point, p2: &Point, p3: &Point, p4: &Point) -> bool {
 
 fn get_intersection(p1: &Point, p2: &Point, p3: &Point, p4: &Point) -> Option<(f64, f64)> {
     let px =
-        (p1.0 * p2.1 - p1.1 * p2.0) * (p3.0 - p4.1) - (p1.0 - p2.0) * (p3.0 * p4.1 - p3.1 * p4.0);
+        (p1.0 * p2.1 - p1.1 * p2.0) * (p3.0 - p4.0) - (p1.0 - p2.0) * (p3.0 * p4.1 - p3.1 * p4.0);
     let py =
-        (p1.0 * p2.1 - p1.1 * p2.0) * (p3.0 - p4.1) - (p1.1 - p2.1) * (p3.0 * p4.1 - p3.1 * p4.0);
+        (p1.0 * p2.1 - p1.1 * p2.0) * (p3.1 - p4.1) - (p1.1 - p2.1) * (p3.0 * p4.1 - p3.1 * p4.0);
+
     let p = (p1.0 - p2.0) * (p3.1 - p4.1) - (p1.1 - p2.1) * (p3.0 - p4.0);
 
     if p == 0 {
