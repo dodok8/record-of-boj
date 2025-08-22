@@ -19,7 +19,7 @@ function main() {
 
   
   const repunitX = parseInt("1".repeat(x))
-  const repunitY = parseInt("1".repeat(x))
+  const repunitY = parseInt("1".repeat(y))
 
   console.log(repunitX + repunitY)
 }
