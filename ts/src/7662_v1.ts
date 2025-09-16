@@ -1,3 +1,5 @@
+// 이중 우선 순위 큐
+
 const fs = require("fs");
 
 type Comparator<T> = (a: T, b: T) => number;
@@ -104,20 +106,24 @@ function main() {
   );
   const T = parseInt(input.next().value as string, 10);
 
-  for (let _tdx = 0; _tdx < T; _tdx += 1) {
-    let n = parseInt(input.next().value as string);
-    const cntMap: Map<number, number> = new Map();
-    const maxHeap = new Heap<number>((a, b) => b - a);
-    const minHeap = new Heap<number>((a, b) => a - b);
+  const cntMap: Map<number, number> = new Map();
+  const maxHeap = new Heap<number>((a, b) => b - a);
+  const minHeap = new Heap<number>((a, b) => a - b);
 
-    const cleanHeaps = () => {
-      while (!minHeap.isEmpty() && (cntMap.get(minHeap.peek()!) || 0) === 0) {
-        minHeap.pop();
-      }
-      while (!maxHeap.isEmpty() && (cntMap.get(maxHeap.peek()!) || 0) === 0) {
-        maxHeap.pop();
-      }
-    };
+  const cleanHeaps = () => {
+    while (!minHeap.isEmpty() && (cntMap.get(minHeap.peek()!) || 0) === 0) {
+      minHeap.pop();
+    }
+    while (!maxHeap.isEmpty() && (cntMap.get(maxHeap.peek()!) || 0) === 0) {
+      maxHeap.pop();
+    }
+  };
+
+  for (let _tdx = 0; _tdx < T; _tdx += 1) {
+    maxHeap.clear();
+    minHeap.clear();
+    cntMap.clear();
+    let n = parseInt(input.next().value as string);
 
     for (let idx = 0; idx < n; idx += 1) {
       const cmd = input.next().value;
