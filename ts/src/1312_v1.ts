@@ -24,6 +24,7 @@ function main() {
 
   if (a % b === 0) {
     console.log(0);
+    return;
   } else if (a > b) {
     a = a % b;
   }
