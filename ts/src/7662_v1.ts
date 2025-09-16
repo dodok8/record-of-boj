@@ -93,18 +93,12 @@ export class Heap<T> {
   }
 }
 
-function* inputIterator<T>(arr: Array<T>) {
-  for (const num of arr) {
-    yield num;
-  }
-}
 
 function main() {
   let input_path = "/dev/stdin";
-  const input = inputIterator(
-    fs.readFileSync(input_path).toString().split(/\s/) as string[],
-  );
-  const T = parseInt(input.next().value as string, 10);
+  const lines = fs.readFileSync(input_path).toString().trim().split('\n');
+  let lineIdx = 0;
+  const T = parseInt(lines[lineIdx++], 10);
 
   const cntMap: Map<number, number> = new Map();
   const maxHeap = new Heap<number>((a, b) => b - a);
@@ -123,11 +117,11 @@ function main() {
     maxHeap.clear();
     minHeap.clear();
     cntMap.clear();
-    let n = parseInt(input.next().value as string);
+    let n = parseInt(lines[lineIdx++]);
 
     for (let idx = 0; idx < n; idx += 1) {
-      const cmd = input.next().value;
-      const target = parseInt(input.next().value as string);
+      const [cmd, targetStr] = lines[lineIdx++].split(' ');
+      const target = parseInt(targetStr);
 
       if (cmd === "I") {
         // 값 삽입
