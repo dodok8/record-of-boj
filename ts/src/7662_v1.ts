@@ -1,6 +1,6 @@
 // 이중 우선 순위 큐
 
-const fs = require("fs");
+import * as readline from "readline";
 
 type Comparator<T> = (a: T, b: T) => number;
 
@@ -93,22 +93,34 @@ export class Heap<T> {
   }
 }
 
+async function main() {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+    terminal: false,
+  });
 
-function main() {
-  let input_path = "/dev/stdin";
-  const lines = fs.readFileSync(input_path).toString().trim().split('\n');
-  let lineIdx = 0;
-  const T = parseInt(lines[lineIdx++], 10);
+  const iterator = rl[Symbol.asyncIterator]();
+
+  const readLine = async () => {
+    const result = await iterator.next();
+    return result.value;
+  };
+
+  const T = parseInt(await readLine(), 10);
 
   const cntMap: Map<number, number> = new Map();
   const maxHeap = new Heap<number>((a, b) => b - a);
   const minHeap = new Heap<number>((a, b) => a - b);
 
-  const cleanHeaps = () => {
-    while (!minHeap.isEmpty() && (cntMap.get(minHeap.peek()!) || 0) === 0) {
+  const cleanMinHeap = () => {
+    while (!minHeap.isEmpty() && !cntMap.has(minHeap.peek()!)) {
       minHeap.pop();
     }
-    while (!maxHeap.isEmpty() && (cntMap.get(maxHeap.peek()!) || 0) === 0) {
+  };
+
+  const cleanMaxHeap = () => {
+    while (!maxHeap.isEmpty() && !cntMap.has(maxHeap.peek()!)) {
       maxHeap.pop();
     }
   };
@@ -117,39 +129,48 @@ function main() {
     maxHeap.clear();
     minHeap.clear();
     cntMap.clear();
-    let n = parseInt(lines[lineIdx++]);
+    let n = parseInt(await readLine());
 
     for (let idx = 0; idx < n; idx += 1) {
-      const [cmd, targetStr] = lines[lineIdx++].split(' ');
+      const line = await readLine();
+      const [cmd, targetStr] = line.split(" ");
       const target = parseInt(targetStr);
 
       if (cmd === "I") {
-        // 값 삽입
         minHeap.push(target);
         maxHeap.push(target);
         cntMap.set(target, (cntMap.get(target) || 0) + 1);
       } else {
-        // 값 삭제
         if (target === 1) {
-          // 최댓값 삭제
+          cleanMaxHeap();
           if (!maxHeap.isEmpty()) {
             const maxVal = maxHeap.peek()!;
-            cntMap.set(maxVal, (cntMap.get(maxVal) || 0) - 1);
+            const newCount = (cntMap.get(maxVal) || 0) - 1;
+            if (newCount === 0) {
+              cntMap.delete(maxVal);
+            } else {
+              cntMap.set(maxVal, newCount);
+            }
             maxHeap.pop();
           }
         } else {
-          // 최솟값 삭제
+          cleanMinHeap();
           if (!minHeap.isEmpty()) {
             const minVal = minHeap.peek()!;
-            cntMap.set(minVal, (cntMap.get(minVal) || 0) - 1);
+            const newCount = (cntMap.get(minVal) || 0) - 1;
+            if (newCount === 0) {
+              cntMap.delete(minVal);
+            } else {
+              cntMap.set(minVal, newCount);
+            }
             minHeap.pop();
           }
         }
-        cleanHeaps();
       }
     }
 
-    cleanHeaps();
+    cleanMinHeap();
+    cleanMaxHeap();
 
     if (maxHeap.isEmpty() || minHeap.isEmpty()) {
       console.log("EMPTY");
@@ -157,6 +178,8 @@ function main() {
       console.log(`${maxHeap.peek()} ${minHeap.peek()}`);
     }
   }
+
+  rl.close();
 }
 
 main();
