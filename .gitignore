@@ -201,3 +201,5 @@ pyrightconfig.json
 # Input
 
 input/*
+
+ts/dist/*
