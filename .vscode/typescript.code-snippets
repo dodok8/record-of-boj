@@ -99,7 +99,7 @@
   "function main stdin": {
     "prefix": "main",
     "body": [
-      "import * as readline from \"readline\";",
+      "const readline = require(\"readline\");",
       "",
       "async function main() {",
       "  const rl = readline.createInterface({",
