@@ -119,5 +119,16 @@
       ""
     ],
     "description": "function main stdin"
+  },
+  "range": {
+    "prefix": "range",
+    "body": [
+      "function* range(start: number, end: number) {",
+      "  for (let i = start; i < end; i++) {",
+      "    yield i;",
+      "  }",
+      "}"
+    ],
+    "description": "range"
   }
 }
