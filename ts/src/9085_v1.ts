@@ -1,4 +1,4 @@
-const readline = require("readline");
+import readline from "readline";
 
 function* range(start: number, end: number) {
   for (let i = start; i < end; i++) {
