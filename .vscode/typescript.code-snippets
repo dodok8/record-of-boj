@@ -1,4 +1,6 @@
-{"Heap": {
+{
+  "Heap": {
+    "scope": "typescript",
     "prefix": "Heap",
     "body": [
       "type Comparator<T> = (a: T, b: T) => number;",
@@ -95,35 +97,27 @@
     "description": "Heap"
   },
   "function main stdin": {
-    "scope": "typescript",
     "prefix": "main",
-    "body":["const fs = require('fs')",
+    "body": [
+      "import * as readline from \"readline\";",
       "",
-      "function* inputIterator<T>(arr: Array<T>) {",
-      "  for (const num of arr) {",
-      "    yield num",
-      "  }",
+      "async function main() {",
+      "  const rl = readline.createInterface({",
+      "    input: process.stdin,",
+      "    terminal: false,",
+      "  });",
+      "",
+      "  const iterator = rl[Symbol.asyncIterator]();",
+      "",
+      "  const readLine = async () => {",
+      "    const { value } = await iterator.next();",
+      "    return value;",
+      "  };",
+      "",
+      "  const T = parseInt(await readLine(), 10);",
       "}",
-      "",
-      "function main() {",
-      "  let input_path = '/dev/stdin'",
-      "  try {",
-      "    if (process.env.LOCAL) {",
-      "      input_path = '/workspaces/record-of-boj/input/${TM_FILENAME_BASE}'",
-      "    }",
-      "  } catch {}",
-      "  let input = inputIterator(",
-      "    fs",
-      "      .readFileSync(input_path)",
-      "      .toString()",
-      "      .split(/\\s/)",
-      "      .map((x: any) => Number(x))",
-      "  )",
-      "",
-      "  let n = input.next().value as number",
-      "}",
-      "",
-      "main()",
-    ] 
+      ""
+    ],
+    "description": "function main stdin"
   }
 }
