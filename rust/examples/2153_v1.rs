@@ -88,7 +88,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     stdin().read_to_string(&mut input).unwrap();
     let mut input = input.split_ascii_whitespace();
     let word_sum: usize = input.next().unwrap().chars().map(char_to_number).sum();
-    let primes = usize::get_primes_le(52 * 20 + 1);
+    let mut primes = usize::get_primes_le(52 * 20 + 1);
+    primes.push(1);
     if primes.contains(&word_sum) {
         writeln!(output, "It is a prime word.")?;
     } else {
