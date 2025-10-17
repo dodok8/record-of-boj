@@ -9,13 +9,11 @@ k, n = map(int, read().split())
 wires = [int(read()) for _ in range(k)]
 
 start = 0
-end = max(wires)
+end = max(wires) + 1
 
 max_p = 0
-while start <= end:
+while start < end:
     mid = (start + end) // 2
-    if mid == 0:
-        break
     num_wire = 0
     for wire in wires:
         num_wire += wire // mid
