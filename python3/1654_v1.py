@@ -14,6 +14,8 @@ end = max(wires)
 max_p = 0
 while start <= end:
     mid = (start + end) // 2
+    if mid == 0:
+        break
     num_wire = 0
     for wire in wires:
         num_wire += wire // mid
