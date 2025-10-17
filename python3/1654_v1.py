@@ -22,6 +22,6 @@ while start < end:
         if mid > max_p:
             max_p = mid
     else:
-        end = mid - 1
+        end = mid
 
 print(max_p)
