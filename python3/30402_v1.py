@@ -5,12 +5,13 @@ from sys import stdin
 read = lambda: stdin.readline().rstrip()
 
 for _ in range(15):
-    if "w" in read().split():
+    image = read().split()
+    if "w" in image:
         print("chunbae")
         break
-    elif "b" in read().split():
+    elif "b" in image:
         print("nabi")
         break
-    else:
+    elif "g" in image:
         print("yeongcheol")
         break
