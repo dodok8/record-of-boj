@@ -22,11 +22,11 @@ for _ in range(t):
     for k in range(1, n):
         dp[UP][k] = max(
             dp[DOWN][k - 1] + stickers[UP][k],
-            max(dp[UP][k - 2], dp[DOWN][k - 2]) + stickers[DOWN][k],
+            max(dp[UP][k - 2], dp[DOWN][k - 2]) + stickers[UP][k],
         )
         dp[DOWN][k] = max(
             dp[UP][k - 1] + stickers[DOWN][k],
-            max(dp[UP][k - 2], dp[DOWN][k - 2]) + stickers[UP][k],
+            max(dp[UP][k - 2], dp[DOWN][k - 2]) + stickers[DOWN][k],
         )
 
     ans = max(dp[DOWN][n - 1], dp[UP][n - 1])
